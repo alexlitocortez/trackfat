@@ -12,6 +12,9 @@ app = FastAPI()
 origins = [
     "http://localhost:3000",
     "http://0.0.0.0:3000",
+    "trackfat.vercel.app",
+    "trackfat-git-main-acim650gmailcoms-projects.vercel.app",
+    "trackfat-r57b7kl3v-acim650gmailcoms-projects.vercel.app"
     # Add other origins as necessary
 ]
 
@@ -27,6 +30,6 @@ app.include_router(bodyfat.router)
 
 # FIGURE OUT WHY ARRAY OF STRINGS IN COLUMNS MATCHES NUMBER DATA IN TABLE COMPONENT
 # MAKE SURE VERCEL DEPLOYMENT WORKS AS INTENDED
-# THEN HAVE FILTERS FOR EACH COLUMN
+# TURN OFF FILTERS FOR COLUMN
 # THEN FIND CREATIVE WAYS TO DISPLAY THE DATA WHILE ALSO MANIPULATING
 
