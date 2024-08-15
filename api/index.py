@@ -1,10 +1,8 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from dotenv import load_dotenv
-from pymongo import MongoClient
-from pydantic import BaseModel
-import os
 from .routers import bodyfat
+from mangum import Mangum
+
 
 app = FastAPI()
 
@@ -28,9 +26,12 @@ app.add_middleware(
 
 app.include_router(bodyfat.router)
 
+handler = Mangum(app)
+
 # FIGURE OUT WHY ARRAY OF STRINGS IN COLUMNS MATCHES NUMBER DATA IN TABLE COMPONENT
 # CENTER DATA TABLE
 # MAKE SURE VERCEL DEPLOYMENT WORKS AS INTENDED
+    # MAYBE NOT WORKING BECAUSE I NEED TO PUT BACKEND IN VERCEL DEPLOYMENT
 # TURN OFF FILTERS FOR COLUMN
 # THEN FIND CREATIVE WAYS TO DISPLAY THE DATA WHILE ALSO MANIPULATING
 
