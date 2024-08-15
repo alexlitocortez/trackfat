@@ -25,10 +25,8 @@ function DataTable() {
         components: {
             MUIDataTable: {
                 styleOverrides: {
-                    tableBody: {
-                        display: 'flex',
-                        justifyContent: 'center',
-                        margin: 'auto'
+                    root: {
+                        backgroundColor: 'red'
                     }
                 }
             }
