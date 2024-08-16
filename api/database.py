@@ -8,3 +8,4 @@ uri = os.getenv('MONGODB_URI')
 client = MongoClient(uri)
 db = client["bodyfat"]
 bodyfat_collection = db["bodyfat"]
+
