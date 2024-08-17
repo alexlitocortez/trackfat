@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import instance from '../helpers/axiosInstance';
 import MUIDataTable from 'mui-datatables';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { error } from 'console';
 
 
 function DataTable() {
@@ -14,6 +15,9 @@ function DataTable() {
             .then(function (res) {
                 setData(res.data)
                 console.log("data", data)
+            })
+            .catch((error) => {
+                console.log("error", error)
             })
     }, [])
 
