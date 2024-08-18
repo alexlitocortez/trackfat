@@ -30,10 +30,10 @@ handler = Mangum(app)
 
 
 # CALCULATIONS I WANT TO MAKE
-    # Avg bodyfat
+    # Calculate averages for each column and put it in one function
     # Bodyfat to weight percentage
     # Create a column to see if a person is obese depending on their bodyfat percentage
 # TURN OFF FILTERS FOR COLUMN TO ADD MY OWN FILTERS
 # FIGURE OUT WHY ARRAY OF STRINGS IN COLUMNS MATCHES NUMBER DATA IN TABLE COMPONENT
-# THEN FIND CREATIVE WAYS TO DISPLAY THE DATA WHILE ALSO MANIPULATING USING NUMPY/PANDAS
+# CREATE AUTH FOR BODYFAT APPLICATION
 
