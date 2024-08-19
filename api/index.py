@@ -29,11 +29,12 @@ app.include_router(bodyfat.router)
 handler = Mangum(app)
 
 
+# ADD DROPDOWNS TO THE PAGE
 # CALCULATIONS I WANT TO MAKE
-    # Calculate averages for each column and put it in one function
+    # Calculate averages for each column and put it in one function and make it work under a dropdown
     # Bodyfat to weight percentage
     # Create a column to see if a person is obese depending on their bodyfat percentage
-# TURN OFF FILTERS FOR COLUMN TO ADD MY OWN FILTERS
 # FIGURE OUT WHY ARRAY OF STRINGS IN COLUMNS MATCHES NUMBER DATA IN TABLE COMPONENT
+# FIGURE OUT WHEN TO USE DYNAMIC SQL QUERIES
 # CREATE AUTH FOR BODYFAT APPLICATION
 

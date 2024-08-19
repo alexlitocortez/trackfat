@@ -40,16 +40,32 @@ async def test_db():
 @router.get('/api/avg-columns')
 async def avg_columns():
 
+    element = []
     # Convert the list of Item objects to a Dataframe
     df = pd.DataFrame([item.dict() for item in items])
 
     # Remove brackets and quotes
     df = df.map(lambda x: str(x).replace('[', '').replace(']', '').replace('"', '') if isinstance(x, str) else x)
 
-    dfAge = df.to_numpy()
-
-    dfAgeArray = df['Age'].values
-
     dfAgeAverage = np.average(df['Age'].values)
+    dfAbdomenAverage = np.average(df['Abdomen'].values)
+    dfBicepsAverage = np.average(df['Biceps'].values)
+    dfWristAverage = np.average(df['Wrist'].values)
+    dfThighAverage = np.average(df['Thigh'].values)
+    dfNeckAverage = np.average(df['Neck'].values)
+    dfKneeAverage = np.average(df['Knee'].values)
+    dfHeightAverage = np.average(df['Height'].values)
+    dfHipAverage = np.average(df['Hip'].values)
+    dfForearmAverage = np.average(df['Forearm'].values)
+    dfDensityAverage = np.average(df['Density'].values)
+    dfChestAverage = np.average(df['Chest'].values)
+    dfBodyFatAverage = np.average(df['BodyFat'].values)
+    dfWeightAverage = np.average(df['Weight'].values)
 
-    return { "avg": dfAgeAverage }
+    return { "avgAge": dfAgeAverage, "avgAbdomen": dfAbdomenAverage, "avgBiceps": dfBicepsAverage, "avgWrist": dfWristAverage, 
+            "avgThigh": dfThighAverage, "avgNeck": dfNeckAverage, "avgKnee": dfKneeAverage, "avgHeight": dfHeightAverage, "avgHip": dfHipAverage, "avgForearm": dfForearmAverage,
+            "avgDensity": dfDensityAverage, "avgChest": dfChestAverage, "avgBodyFat": dfBodyFatAverage, "avgWeight": dfWeightAverage
+            }
+    # element.append(elements)
+
+    # return element
