@@ -5,6 +5,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import instance from '../helpers/axiosInstance';
+import { error } from 'console';
 
 type DropdownProps = {
     average: string | undefined;
@@ -14,23 +15,31 @@ type DropdownProps = {
 }
 
 function Dropdown({ average, setAverage, data, setData }: DropdownProps) {
+
     const handleChange = (event: SelectChangeEvent) => {
+        const selectedValue = event.target.value as string
         setAverage(event.target.value as string);
         instance.get('/avg-columns')
             .then(function (res) {
-
+                setData(res.data[selectedValue])
+                console.log("res", res.data)
+                console.log("data dropdown", data)
+            })
+            .catch((error) => {
+                console.log("error", error)
             })
     }
+
     return (
         <Box sx={{ minWidth: 120, marginBottom: '1rem' }}>
             <FormControl fullWidth>
-                <InputLabel id="demo-simple-select-label">Select Average</InputLabel>
+                <InputLabel id="demo-simple-select-label">Average</InputLabel>
                 <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
                     value={average}
                     label="Select Column"
-                    className='text-white bg-white'
+                    className='text-black bg-white'
                     onChange={handleChange}
                 >
                     <MenuItem value={"avgAge"}>Age</MenuItem>

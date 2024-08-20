@@ -66,6 +66,3 @@ async def avg_columns():
             "avgThigh": dfThighAverage, "avgNeck": dfNeckAverage, "avgKnee": dfKneeAverage, "avgHeight": dfHeightAverage, "avgHip": dfHipAverage, "avgForearm": dfForearmAverage,
             "avgDensity": dfDensityAverage, "avgChest": dfChestAverage, "avgBodyFat": dfBodyFatAverage, "avgWeight": dfWeightAverage
             }
-    # element.append(elements)
-
-    # return element
