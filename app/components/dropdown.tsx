@@ -5,6 +5,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import instance from '../helpers/axiosInstance';
+import TextField from '@mui/material/TextField';
 import { error } from 'console';
 
 type DropdownProps = {
@@ -31,7 +32,7 @@ function Dropdown({ average, setAverage, data, setData }: DropdownProps) {
     }
 
     return (
-        <Box sx={{ minWidth: 120, marginBottom: '1rem' }}>
+        <Box sx={{ minWidth: 120, marginBottom: '1rem', display: 'flex', justifyContent: 'space-between' }}>
             <FormControl fullWidth>
                 <InputLabel id="demo-simple-select-label">Average</InputLabel>
                 <Select
@@ -59,6 +60,7 @@ function Dropdown({ average, setAverage, data, setData }: DropdownProps) {
                     <MenuItem value={"avgWeight"}>Weight</MenuItem>
                 </Select>
             </FormControl>
+            <TextField id='filled-basic' variant='filled' value={data} />
         </Box>
     )
 }

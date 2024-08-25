@@ -1,9 +1,11 @@
-from fastapi import APIRouter
-from api.helper.crud import get_items
+from fastapi import APIRouter, HTTPException
+from api.helper.crud import get_items, get_new_items
 from ..database import db, bodyfat_collection
+from typing import List
 import pandas as pd
 import numpy as np
 import logging
+
 
 router = APIRouter()
 
@@ -11,6 +13,8 @@ router = APIRouter()
 logging.basicConfig(level=logging.INFO)
 
 items = get_items()
+
+newItems = get_new_items()
 
 @router.get('/api/df')
 def return_df():
@@ -20,8 +24,6 @@ def return_df():
 
     # Remove brackets and quotes
     df = df.map(lambda x: str(x).replace('[', '').replace(']', '').replace('"', '') if isinstance(x, str) else x)
-
-    print("df", df)
 
     return df.to_dict(orient='records')
 
@@ -66,3 +68,18 @@ async def avg_columns():
             "avgThigh": dfThighAverage, "avgNeck": dfNeckAverage, "avgKnee": dfKneeAverage, "avgHeight": dfHeightAverage, "avgHip": dfHipAverage, "avgForearm": dfForearmAverage,
             "avgDensity": dfDensityAverage, "avgChest": dfChestAverage, "avgBodyFat": dfBodyFatAverage, "avgWeight": dfWeightAverage
             }
+
+@router.get('/api/convert')
+async def convert_percents():
+
+    df = pd.DataFrame([item.dict() for item in items])
+
+    # df = pd.DataFrame([item.dict() for item in items])
+    df = df.map(lambda x: str(x).replace('[', '').replace(']', '').replace('"', '') if isinstance(x, str) else x)
+
+    df['BodyfatsWeight'] = df['BodyFat'].astype(float) / 100 * df['Weight'].values
+
+    print("df", df)
+
+    return df.to_dict(orient='records')
+

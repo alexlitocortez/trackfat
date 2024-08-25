@@ -31,7 +31,8 @@ handler = Mangum(app)
 
 # CALCULATIONS I WANT TO MAKE
     # Creating a column by multiplying bodyfat to weight for each row
-        # Convert percentage to decimal
+        # Declare interface for array of objects
+        # Find a way to update state when click button to include bodyfat weight data
     # Create a column to see if a person is obese depending on their bodyfat percentage
         # How to see 
 # FIGURE OUT WHY ARRAY OF STRINGS IN COLUMNS MATCHES NUMBER DATA IN TABLE COMPONENT

@@ -10,12 +10,13 @@ import Dropdown from './components/dropdown';
 export default function Home() {
   const [average, setAverage] = useState<string | undefined>()
   const [data, setData] = useState<number | undefined>()
+  const [bodyfatWeight, setBodyfatWeight] = useState<number[] | undefined>()
 
-  const avgColumns = () => {
-    instance.get('/avg-columns')
+  const convertPercent = () => {
+    instance.post('/convert')
       .then(function (res) {
-        // setAverage(res.data)
-        console.log("average", average)
+        setData(res.data)
+        console.log("res", res)
       })
       .catch((error) => {
         console.log("error", error)
@@ -26,11 +27,8 @@ export default function Home() {
     <main className="flex min-h-screen flex-col items-center justify-between p-24 bg-white">
       <div className="z-10 w-full max-w-5xl items-center flex-col justify-center font-mono text-sm lg:flex">
         <Dropdown average={average} setAverage={setAverage} data={data} setData={setData} />
-        <div>
-          <em className='text-black'>{data}</em>
-        </div>
         <DataTable />
-        <button onClick={avgColumns}>Click for test</button>
+        <button onClick={convertPercent} className='text-black'>Click for test</button>
         <div className='text-black'>
         </div>
       </div>

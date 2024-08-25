@@ -1,5 +1,5 @@
 from ..database import bodyfat_collection
-from ..models.bodyfatModels import Item
+from ..models.bodyfatModels import Item, newItem
 from fastapi import HTTPException
 
 def get_items():
@@ -31,4 +31,34 @@ def get_items():
         return item_list
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-    
+
+def get_new_items():
+    try:
+        items = list(bodyfat_collection.find())
+        item_list = []
+
+        for item in items:
+            item['_id'] = str(item['_id'])  
+            item_data = newItem(
+                id=item['_id'],
+                Density=item['Density'],
+                BodyFat=item['BodyFat'],
+                Age=item['Age'],
+                Weight=item['Weight'],
+                Height=item['Height'],
+                Neck=item['Neck'],
+                Chest=item['Chest'],
+                Abdomen=item['Abdomen'],
+                Hip=item['Hip'],
+                Thigh=item['Thigh'],
+                Knee=item['Knee'],
+                Ankle=item['Ankle'],
+                Biceps=item['Biceps'],
+                Forearm=item['Forearm'],
+                Wrist=item['Wrist'],
+                Bodyfat_Weight=item.get('Bodyfat_Weight', 0),
+            )
+            item_list.append(item_data)
+        return item_list
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
