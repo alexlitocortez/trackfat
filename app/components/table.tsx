@@ -12,6 +12,7 @@ type DataRow = {
 
 function DataTable() {
     const [data, setData] = useState<DataRow[]>([]);
+    const [obese, setObese] = useState()
     const [columns, setColumns] = useState([
         {
             name: 'Age',
@@ -118,34 +119,42 @@ function DataTable() {
 
     const addColumn = () => {
 
-        const newColumnName = 'BodyfatsWeight';
+        const newColumnName = 'Bodyfat Weight';
         const newColumn = {
             name: newColumnName,
             options: { filter: true },
         }
         instance.get('/convert')
             .then(function (res) {
-                // const updatedData = res.data.map((row: DataRow) => ({
-                //     ...row,
-                //     [newColumnName]: 'Bodyfat Weight'  // Or use a calculated value from `res.data`
-                // }));
                 setData(res.data)
                 console.log("res", res)
 
                 // Update the state with new columns and data
                 setColumns(prevColumns => [...prevColumns, newColumn]);
                 // setData(updatedData);
-                console.log("new data", data)
             })
             .catch((error) => {
                 console.error("error", error);
             });
     }
 
+    const bodyfatStatus = () => {
+        instance.get('/bodyfat-status-men')
+            .then(function (res) {
+                console.log("res", res)
+            })
+            .catch((error) => {
+                console.error("error", error)
+            })
+    }
+
     return (
         <div>
             <button onClick={addColumn} style={{ marginBottom: '20px', color: 'black' }}>
                 Add Column
+            </button>
+            <button onClick={bodyfatStatus} style={{ marginBottom: '20px', color: 'black' }}>
+                Bodyfat Status
             </button>
             <MUIDataTable
                 title={"Bodyfat Data"}

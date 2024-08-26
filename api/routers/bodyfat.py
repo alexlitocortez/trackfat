@@ -74,12 +74,42 @@ async def convert_percents():
 
     df = pd.DataFrame([item.dict() for item in items])
 
-    # df = pd.DataFrame([item.dict() for item in items])
     df = df.map(lambda x: str(x).replace('[', '').replace(']', '').replace('"', '') if isinstance(x, str) else x)
 
-    df['BodyfatsWeight'] = df['BodyFat'].astype(float) / 100 * df['Weight'].values
+    df['Bodyfat Weight'] = df['BodyFat'].astype(float) / 100 * df['Weight'].values
 
     print("df", df)
 
     return df.to_dict(orient='records')
 
+
+@router.get('/api/bodyfat-status-men')
+async def bodyfat_status_men():
+    
+    df = pd.DataFrame([item.dict() for item in items])
+
+    df = df.map(lambda x: str(x).replace('[', '').replace(']', '').replace('"', '') if isinstance(x, str) else x)
+
+    overweight = 30
+    average = 23
+    fit = 15
+    athlete = 14
+
+    print("overweight", overweight)
+
+    def categorize(row):
+        bodyfat = row['BodyFat']
+        if bodyfat >= overweight:
+            return "Overweight"
+        elif bodyfat <= average:
+            return "Average"
+        elif bodyfat >= fit:
+            return "Fit"
+        elif bodyfat <= athlete:
+            return "Athlete"
+        else:
+            return
+        
+    df['BodyFatCategory'] = df.apply(categorize, axis=1)
+
+    return df.to_dict(orient='records')

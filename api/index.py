@@ -30,11 +30,9 @@ handler = Mangum(app)
 
 
 # CALCULATIONS I WANT TO MAKE
-    # Creating a column by multiplying bodyfat to weight for each row
-        # Declare interface for array of objects
-        # Find a way to update state when click button to include bodyfat weight data
     # Create a column to see if a person is obese depending on their bodyfat percentage
-        # How to see 
+        # Make two seperate columns for men and women saying obese, fit, average, or athletic
+# CHECK WHY VERCEL ISN'T WORKING 
 # FIGURE OUT WHY ARRAY OF STRINGS IN COLUMNS MATCHES NUMBER DATA IN TABLE COMPONENT
 # FIGURE OUT WHEN TO USE DYNAMIC SQL QUERIES
 # CREATE AUTH FOR BODYFAT APPLICATION
