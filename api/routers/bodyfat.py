@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException
-from api.helper.crud import get_items, get_new_items
+from api.helper.crud import get_items, get_new_items, get_bodyfat_category
 from ..database import db, bodyfat_collection
 from typing import List
 import pandas as pd
@@ -78,8 +78,6 @@ async def convert_percents():
 
     df['Bodyfat Weight'] = df['BodyFat'].astype(float) / 100 * df['Weight'].values
 
-    print("df", df)
-
     return df.to_dict(orient='records')
 
 
@@ -90,26 +88,10 @@ async def bodyfat_status_men():
 
     df = df.map(lambda x: str(x).replace('[', '').replace(']', '').replace('"', '') if isinstance(x, str) else x)
 
-    overweight = 30
-    average = 23
-    fit = 15
-    athlete = 14
-
-    print("overweight", overweight)
-
     def categorize(row):
         bodyfat = row['BodyFat']
-        if bodyfat >= overweight:
-            return "Overweight"
-        elif bodyfat <= average:
-            return "Average"
-        elif bodyfat >= fit:
-            return "Fit"
-        elif bodyfat <= athlete:
-            return "Athlete"
-        else:
-            return
-        
+        return get_bodyfat_category(bodyfat)
+    
     df['BodyFatCategory'] = df.apply(categorize, axis=1)
 
     return df.to_dict(orient='records')

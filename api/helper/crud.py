@@ -62,3 +62,20 @@ def get_new_items():
         return item_list
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
+
+def get_bodyfat_category(bodyfat):
+    
+    ranges = [
+        (6, 13, "Athlete"),
+        (14, 17, "Fit"),
+        (18, 25, "Average"),
+        (26, float('inf'), "Overweight")
+    ]
+    
+    # Iterate through the ranges
+    for lower, upper, category in ranges:
+        if lower <= bodyfat <= upper:
+            return category
+    
+    return "Unknown"  # If no range matches

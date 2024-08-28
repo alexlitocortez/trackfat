@@ -141,7 +141,8 @@ function DataTable() {
     const bodyfatStatus = () => {
         instance.get('/bodyfat-status-men')
             .then(function (res) {
-                console.log("res", res)
+                setData(res.data)
+                console.log("res bodyfat", res)
             })
             .catch((error) => {
                 console.error("error", error)
