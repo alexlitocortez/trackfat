@@ -67,6 +67,7 @@ def get_new_items():
 def get_bodyfat_category(bodyfat):
     
     ranges = [
+        (0, 5, "Essential Fat"),
         (6, 13, "Athlete"),
         (14, 17, "Fit"),
         (18, 25, "Average"),
@@ -79,3 +80,19 @@ def get_bodyfat_category(bodyfat):
             return category
     
     return "Unknown"  # If no range matches
+
+def get_womens_bodyfat(bodyfat):
+
+    ranges = [
+        (0, 13, "Essential Fat"),
+        (14, 20, "Athlete"),
+        (21, 24, "Fitness"),
+        (25, 31, "Average"),
+        (26, float('inf'), "Overweight")
+    ]
+
+    for lower, upper, category in ranges:
+        if lower <= bodyfat <= upper:
+            return category
+        
+    return "Unknown"

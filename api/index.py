@@ -30,7 +30,7 @@ handler = Mangum(app)
 
 
 # CALCULATIONS I WANT TO MAKE
-    # Create two columns for bodyfat category for men and women
+    # Figure out why I can't have both men and women's bf cateogry displayed at the same time (My first guess is it has to do with state)
     # Understand bodyfat category function more
 # CHECK WHY VERCEL ISN'T WORKING 
 # FIGURE OUT WHY ARRAY OF STRINGS IN COLUMNS MATCHES NUMBER DATA IN TABLE COMPONENT

@@ -137,7 +137,7 @@ function DataTable() {
             });
     }
 
-    const bodyfatCategory = () => {
+    const mensBodyfatCategory = () => {
         const newColumnName = 'BodyFatCategory';
         const newColumn = {
             name: newColumnName,
@@ -146,7 +146,24 @@ function DataTable() {
         instance.get('/bodyfat-status-men')
             .then(function (res) {
                 setData(res.data)
-                console.log("bf category", res)
+
+                setColumns(prevColumns => [...prevColumns, newColumn]);
+            })
+            .catch((error) => {
+                console.error("error", error)
+            })
+    }
+
+    const womensBodyfatCategory = () => {
+        const newColumnName = 'Women BodyFatCategory';
+        const newColumn = {
+            name: newColumnName,
+            options: { filter: true },
+        }
+        instance.get('/bodyfat-status-women')
+            .then(function (res) {
+                setData(res.data)
+                console.log("womens bf category", data)
 
                 setColumns(prevColumns => [...prevColumns, newColumn]);
             })
@@ -160,8 +177,11 @@ function DataTable() {
             <button onClick={addColumn} style={{ marginBottom: '20px', color: 'black', marginRight: '1rem' }}>
                 Add Column
             </button>
-            <button onClick={bodyfatCategory} style={{ marginBottom: '20px', color: 'black' }}>
+            <button onClick={mensBodyfatCategory} style={{ marginBottom: '20px', color: 'black' }}>
                 Men's BF Category
+            </button>
+            <button className='text-black' onClick={womensBodyfatCategory}>
+                Women's BF Category
             </button>
             <MUIDataTable
                 title={"Bodyfat Data"}

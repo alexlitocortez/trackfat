@@ -1,5 +1,5 @@
 from fastapi import APIRouter, HTTPException
-from api.helper.crud import get_items, get_new_items, get_bodyfat_category
+from api.helper.crud import get_items, get_new_items, get_bodyfat_category, get_womens_bodyfat
 from ..database import db, bodyfat_collection
 from typing import List
 import pandas as pd
@@ -100,4 +100,15 @@ async def bodyfat_status_men():
 
 @router.get('/api/bodyfat-status-women')
 async def bodyfat_status_women():
-    return
+    
+    df = pd.DataFrame([item.dict() for item in items])
+
+    df = df.map(lambda x: str(x).replace('[', '').replace(']', '') if isinstance(x, str) else x)
+
+    def categorize(row):
+        bodyfat = row['BodyFat']
+        return get_womens_bodyfat(bodyfat)
+    
+    df['Women BodyFatCategory'] = df.apply(categorize, axis=1)
+
+    return df.to_dict(orient='records')
