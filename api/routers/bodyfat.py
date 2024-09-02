@@ -94,4 +94,10 @@ async def bodyfat_status_men():
     
     df['BodyFatCategory'] = df.apply(categorize, axis=1)
 
+    print("df", df)
+
     return df.to_dict(orient='records')
+
+@router.get('/api/bodyfat-status-women')
+async def bodyfat_status_women():
+    return

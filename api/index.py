@@ -30,8 +30,8 @@ handler = Mangum(app)
 
 
 # CALCULATIONS I WANT TO MAKE
-    # Create a column to see if a person is obese depending on their bodyfat percentage
-        # Function is not reading bodyfat row number. Maybe it has to do somethibg with the type of data in the column.
+    # Create two columns for bodyfat category for men and women
+    # Understand bodyfat category function more
 # CHECK WHY VERCEL ISN'T WORKING 
 # FIGURE OUT WHY ARRAY OF STRINGS IN COLUMNS MATCHES NUMBER DATA IN TABLE COMPONENT
 # FIGURE OUT WHEN TO USE DYNAMIC SQL QUERIES
