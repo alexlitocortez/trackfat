@@ -10,9 +10,14 @@ type DataRow = {
     [key: string]: any;
 }
 
+interface BodyFatData {
+    BodyFatCategory: number;
+    // other properties...
+}
+
 function DataTable() {
     const [data, setData] = useState<DataRow[]>([]);
-    const [obese, setObese] = useState()
+    const [newData, setNewData] = useState<BodyFatData[]>([]);
     const [columns, setColumns] = useState([
         {
             name: 'Age',
@@ -125,7 +130,10 @@ function DataTable() {
         }
         instance.get('/convert')
             .then(function (res) {
-                setData(res.data)
+                setData(prevData => prevData.map((row, index) => ({
+                    ...row,
+                    [newColumnName]: res.data[index]?.[newColumnName] || null
+                })));
                 console.log("res", res)
 
                 // Update the state with new columns and data
@@ -145,8 +153,10 @@ function DataTable() {
         }
         instance.get('/bodyfat-status-men')
             .then(function (res) {
-                setData(res.data)
-
+                setData(prevData => prevData.map((row, index) => ({
+                    ...row,
+                    [newColumnName]: res.data[index]?.[newColumnName] || null
+                })));
                 setColumns(prevColumns => [...prevColumns, newColumn]);
             })
             .catch((error) => {
@@ -162,7 +172,10 @@ function DataTable() {
         }
         instance.get('/bodyfat-status-women')
             .then(function (res) {
-                setData(res.data)
+                setData(prevData => prevData.map((row, index) => ({
+                    ...row,
+                    [newColumnName]: res.data[index]?.[newColumnName] || null
+                })))
                 console.log("womens bf category", data)
 
                 setColumns(prevColumns => [...prevColumns, newColumn]);
