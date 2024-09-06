@@ -76,10 +76,9 @@ async def convert_percents():
 
     df = df.map(lambda x: str(x).replace('[', '').replace(']', '').replace('"', '') if isinstance(x, str) else x)
 
-    df['Bodyfat Weight'] = df['BodyFat'].astype(float) / 100 * df['Weight'].values
+    df['Bodyfat Weight'] = round(df['BodyFat'].astype(float) / 100 * df['Weight'].values, 2)
 
     return df.to_dict(orient='records')
-
 
 @router.get('/api/bodyfat-status-men')
 async def bodyfat_status_men():
@@ -92,7 +91,7 @@ async def bodyfat_status_men():
         bodyfat = row['BodyFat']
         return get_bodyfat_category(bodyfat)
     
-    df['BodyFatCategory'] = df.apply(categorize, axis=1)
+    df['Men BodyFatCategory'] = df.apply(categorize, axis=1)
 
     print("df", df)
 

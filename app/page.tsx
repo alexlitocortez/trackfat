@@ -28,7 +28,6 @@ export default function Home() {
       <div className="z-10 w-full max-w-5xl items-center flex-col justify-center font-mono text-sm lg:flex">
         <Dropdown average={average} setAverage={setAverage} data={data} setData={setData} />
         <DataTable />
-        <button onClick={convertPercent} className='text-black'>Click for test</button>
         <div className='text-black'>
         </div>
       </div>

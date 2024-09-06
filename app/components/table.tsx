@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import instance from '../helpers/axiosInstance';
 import MUIDataTable from 'mui-datatables';
+import Box from '@mui/material/Box';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { error } from 'console';
 
@@ -146,7 +147,7 @@ function DataTable() {
     }
 
     const mensBodyfatCategory = () => {
-        const newColumnName = 'BodyFatCategory';
+        const newColumnName = 'Men BodyFatCategory';
         const newColumn = {
             name: newColumnName,
             options: { filter: true },
@@ -185,17 +186,20 @@ function DataTable() {
             })
     }
 
+
     return (
         <div>
-            <button onClick={addColumn} style={{ marginBottom: '20px', color: 'black', marginRight: '1rem' }}>
-                Add Column
-            </button>
-            <button onClick={mensBodyfatCategory} style={{ marginBottom: '20px', color: 'black' }}>
-                Men's BF Category
-            </button>
-            <button className='text-black' onClick={womensBodyfatCategory}>
-                Women's BF Category
-            </button>
+            <Box sx={{ marginBottom: '1rem' }}>
+                <button onClick={addColumn} className='bg-black hover:bg-slate-600 text-white font-bold py-2 px-4 rounded mr-1'>
+                    Bodyfat Weight
+                </button>
+                <button onClick={mensBodyfatCategory} className='bg-black hover:bg-slate-600 text-white font-bold py-2 px-4 rounded mr-1'>
+                    Men's BF Category
+                </button>
+                <button onClick={womensBodyfatCategory} className='bg-black hover:bg-slate-600 text-white font-bold py-2 px-4 rounded' >
+                    Women's BF Category
+                </button>
+            </Box>
             <MUIDataTable
                 title={"Bodyfat Data"}
                 data={data}
