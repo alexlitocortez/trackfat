@@ -30,9 +30,9 @@ handler = Mangum(app)
 
 
 # CALCULATIONS I WANT TO MAKE
-    # Add routing between different datasets
+    # Fix basemodel for lifestyle GET function so it can work
+    # Add routing between different datasets and pages (Look at Next.js routing)
     # Add names to dataset
-    # Add lifestyle dataset
     # Add calculator to determine how long to get to specific bf percentage
     # Understand bodyfat category function more
 # CHECK WHY VERCEL ISN'T WORKING 

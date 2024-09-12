@@ -1,6 +1,38 @@
-from ..database import bodyfat_collection
-from ..models.bodyfatModels import Item, newItem
+from ..database import bodyfat_collection, lifestyle_collection
+from ..models.bodyfatModels import Item, newItem, LifestyleItem
 from fastapi import HTTPException
+
+def get_lifestyle_items():
+    try:
+        lifestyle_items = list(lifestyle_collection.find())
+        lifestyle_items_list = []
+
+        for lifestyle_item in lifestyle_items:
+        #     sleep_disorder = lifestyle_item['Sleep Disorder', None]
+        # if sleep_disorder not in ['Sleep Apnea', 'Insomnia', None]:
+        #     sleep_disorder = None 
+            
+            lifestyle_item['_id'] = str(lifestyle_item['_id'])
+            lifestyle_item_data = LifestyleItem(
+                id=lifestyle_item['_id'],
+                Person_ID=lifestyle_item['Person ID'],
+                Gender=lifestyle_item['Gender'],
+                Age=lifestyle_item['Age'],
+                Occupation=lifestyle_item['Occupation'],
+                Sleep_Duration=lifestyle_item['Sleep Duration'],
+                Quality_Of_Sleep=lifestyle_item['Quality of Sleep'],
+                Physical_Activity_Level=lifestyle_item['Physical Activity Level'],
+                Stress_Level=lifestyle_item['Stress Level'],
+                BMI_Category=lifestyle_item['BMI Category'],
+                Blood_Pressure=lifestyle_item['Blood Pressure'],
+                Heart_Rate=lifestyle_item['Heart Rate'],
+                Daily_Steps=lifestyle_item['Daily Steps'],
+                # Sleep_Disorder=lifestyle_item["Sleep Apnea", "Insomnia"]
+            )
+            lifestyle_items_list.append(lifestyle_item_data)
+        return lifestyle_items_list
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 def get_items():
     try:

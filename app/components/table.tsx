@@ -4,8 +4,6 @@ import React, { useState, useEffect } from 'react';
 import instance from '../helpers/axiosInstance';
 import MUIDataTable from 'mui-datatables';
 import Box from '@mui/material/Box';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { error } from 'console';
 
 type DataRow = {
     [key: string]: any;
@@ -18,7 +16,6 @@ interface BodyFatData {
 
 function DataTable() {
     const [data, setData] = useState<DataRow[]>([]);
-    const [newData, setNewData] = useState<BodyFatData[]>([]);
     const [columns, setColumns] = useState([
         {
             name: 'Age',
