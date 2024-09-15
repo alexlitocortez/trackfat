@@ -18,6 +18,7 @@ newItems = get_new_items()
 
 lifestyleItems = get_lifestyle_items()
 
+
 @router.get('/api/lifestyle')
 def return_lifestyle_df():
 

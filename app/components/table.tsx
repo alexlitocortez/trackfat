@@ -11,7 +11,6 @@ type DataRow = {
 
 interface BodyFatData {
     BodyFatCategory: number;
-    // other properties...
 }
 
 function DataTable() {

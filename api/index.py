@@ -30,8 +30,12 @@ handler = Mangum(app)
 
 
 # CALCULATIONS I WANT TO MAKE
-    # Fix basemodel for lifestyle GET function so it can work
-    # Add routing between different datasets and pages (Look at Next.js routing)
+    # Containerize either the frontend/backend/database
+    # Create "create account" component
+    # Create "sign in" component
+    # Configure authentication
+    # Get sleep disorder field
+    # Create nested routes
     # Add names to dataset
     # Add calculator to determine how long to get to specific bf percentage
     # Understand bodyfat category function more

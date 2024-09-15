@@ -11,12 +11,47 @@ type DataRow = {
 
 function LifestyleTable() {
     const [data, setData] = useState<DataRow[]>([])
+    const [columns, setColumns] = useState([
+        {
+            name: 'Gender'
+        },
+        {
+            name: 'Age'
+        },
+        {
+            name: 'Occupation'
+        },
+        {
+            name: 'Sleep_Duration'
+        },
+        {
+            name: 'Quality_Of_Sleep'
+        },
+        {
+            name: 'Physical_Activity_Level'
+        },
+        {
+            name: 'Stress_Level'
+        },
+        {
+            name: 'BMI_Category'
+        },
+        {
+            name: 'Blood_Pressure'
+        },
+        {
+            name: 'Heart_Rate'
+        },
+        {
+            name: 'Daily_Steps'
+        }
+    ])
 
     useEffect(() => {
         instance.get('/lifestyle')
             .then(function (res) {
                 setData(res.data)
-                console.log("res", res.data)
+                console.log("res", data)
             })
             .catch((error) => {
                 console.log("error", error)
@@ -24,7 +59,15 @@ function LifestyleTable() {
     }, [])
 
     return (
-        <div>lifestyletable</div>
+        <div>
+            <Box sx={{ marginBottom: '1rem' }}>
+                <MUIDataTable
+                    title={"Lifestyle Data"}
+                    data={data}
+                    columns={columns}
+                />
+            </Box>
+        </div>
     )
 }
 
