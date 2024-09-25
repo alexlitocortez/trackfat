@@ -31,8 +31,6 @@ handler = Mangum(app)
 
 # CALCULATIONS I WANT TO MAKE
     # Containerize either the frontend/backend/database
-    # Create "create account" component
-    # Create "sign in" component
     # Configure authentication
     # Get sleep disorder field
     # Create nested routes
