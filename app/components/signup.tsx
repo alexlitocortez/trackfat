@@ -1,4 +1,6 @@
-import React from 'react'
+"use client"
+
+import React, { useState } from 'react'
 
 import Box from '@mui/material/Box';
 import MuiCard from '@mui/material/Card';
@@ -6,8 +8,50 @@ import Typography from '@mui/material/Typography';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
+import instance from '../helpers/axiosInstance';
+import axios from 'axios';
+
+interface UserRegistration {
+    email: string;
+    password: string;
+    confirmPassword: string;
+}
 
 function Signup() {
+    const [userRegistration, setUserRegistration] = useState<UserRegistration>({
+        email: '',
+        password: '',
+        confirmPassword: ''
+    })
+
+    const registerUser = () => {
+        axios.post('/register')
+    }
+
+    const handleEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setUserRegistration({
+            ...userRegistration,
+            email: e.target.value
+        })
+    };
+
+    const handlePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setUserRegistration({
+            ...userRegistration,
+            password: e.target.value
+        })
+    }
+
+    const handleConfirmPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setUserRegistration({
+            ...userRegistration,
+            password: e.target.value
+        })
+    }
+
+    console.log("password", userRegistration.password)
+
     return (
         <div>
             <MuiCard variant='outlined' sx={{ padding: '1rem' }}>
@@ -42,6 +86,8 @@ function Signup() {
                             required
                             fullWidth
                             variant="outlined"
+                            onChange={handleEmail}
+                            value={userRegistration.email}
                             // color={emailError ? 'error' : 'primary'}
                             sx={{ ariaLabel: 'email' }}>
 
@@ -63,6 +109,8 @@ function Signup() {
                             required
                             fullWidth
                             variant="outlined"
+                            onChange={handlePassword}
+                            value={userRegistration.password}
                         // color={passwordError ? 'error' : 'primary'}
                         />
                     </FormControl>
@@ -80,8 +128,19 @@ function Signup() {
                             required
                             fullWidth
                             variant="outlined"
+                            onChange={handleConfirmPassword}
+                            value={userRegistration.confirmPassword}
                         />
                     </FormControl>
+                    <Button
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                    // sx={{ backgroundColor: 'blue' }}
+                    // onClick={validateInputs}
+                    >
+                        Create Account
+                    </Button>
                 </Box>
             </MuiCard>
         </div>
