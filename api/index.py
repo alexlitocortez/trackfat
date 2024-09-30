@@ -1,39 +1,9 @@
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from .routers import bodyfat
+from .routers import auth, bodyfat
 from mangum import Mangum
-from models import userModels
-from sqlalchemy.orm import Session
-from database import Base, engine, SessionLocal
-import schemas
-import models
-
-Base.meta.create_all(engine)
-def get_session():
-    session = SessionLocal()
-    try:
-        yield session
-    finally:
-        session.close()
 
 app = FastAPI()
-
-@app.post("/register")
-def register_user(user: schemas.UserCreate, session: Session = Depends(get_session)):
-    existing_user = session.query(models.userModels).filter_by(email=user.email).first()
-    if existing_user:
-        raise HTTPException(status_code=400, detail="Email already registered")
-    
-    encrypted_password = get_hashed_password(user.password)
-
-    new_user = models.User(username=user.username, email=user.email, password=encrypted_password )
-
-    session.add(new_user)
-    session.commit()
-    session.refresh(new_user)
-
-    return {"message":"user created successfully"}
-
 
 # Allow CORS from the specified origins
 origins = [
@@ -54,6 +24,7 @@ app.add_middleware(
 )
 
 app.include_router(bodyfat.router)
+app.include_router(auth.router) 
 
 handler = Mangum(app)
 

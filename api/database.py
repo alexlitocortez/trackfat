@@ -2,9 +2,10 @@ from pymongo import MongoClient
 import pandas as pd
 import os 
 from dotenv import load_dotenv
+from typing import Generator
 from sqlalchemy import create_engine
-from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
+# from sqlalchemy.ext.declarative import declarative_base
+# from sqlalchemy.orm import sessionmaker
 
 load_dotenv()
 
@@ -20,10 +21,16 @@ data = df.to_dict(orient="records")
 
 lifestyle_collection.insert_many(data)
 
-engine = create_engine(uri)
+def get_database() -> Generator:
+    try:
+        yield db
+    finally:
+        client.close()
+
+# engine = create_engine(uri)
 
 # Create declarative base meta instance
-Base = declarative_base()
+# Base = declarative_base()
 
 # Create session local class for session maker
-SessionLocal = sessionmaker(bind=engine, expire_on_commit=False)
+# SessionLocal = sessionmaker(bind=engine, expire_on_commit=False)
