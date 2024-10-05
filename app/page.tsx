@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { Box } from '@mui/material';
 import { useRouter } from 'next/navigation';
-import CreateAccount from './components/createaccount';
+import Login from './components/login';
 
 export default function Home() {
   const router = useRouter()
@@ -16,7 +16,7 @@ export default function Home() {
           <button className='text-white bg-black rounded m-1 p-3' onClick={() => router.push('/bodyfat')}>Bodyfat</button>
           <button className='text-white bg-black rounded m-1 p-3' onClick={() => router.push('/lifestyle')}>Lifestyle</button>
         </Box> */}
-        <CreateAccount />
+        <Login />
       </div>
     </main>
   );
