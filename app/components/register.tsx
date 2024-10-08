@@ -11,22 +11,43 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import instance from '../helpers/axiosInstance';
 import axios from 'axios';
+import { error } from 'console';
 
 interface UserRegistration {
+    username: string
     email: string;
     password: string;
     confirmPassword: string;
 }
 
-function CreateAccount() {
+function Register() {
     const [userRegistration, setUserRegistration] = useState<UserRegistration>({
+        username: '',
         email: '',
         password: '',
         confirmPassword: ''
     })
 
     const registerUser = () => {
-        axios.post('/register')
+        instance.post('/register', {
+            username: userRegistration.username,
+            email: userRegistration.email,
+            password: userRegistration.password
+        })
+            .then(function (res) {
+                console.log("res", res.data)
+            })
+            .catch((error) => {
+                console.log("error", error)
+            })
+    }
+
+
+    const handleUsername = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setUserRegistration({
+            ...userRegistration,
+            username: e.target.value
+        })
     }
 
     const handleEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -60,7 +81,7 @@ function CreateAccount() {
                     variant="h4"
                     sx={{ width: '100%', fontSize: 'clamp(2rem, 10vw, 2.15rem)' }}
                 >
-                    Create Account
+                    Register
                 </Typography>
                 <Box
                     component="form"
@@ -83,6 +104,8 @@ function CreateAccount() {
                             required
                             fullWidth
                             variant="outlined"
+                            onChange={handleUsername}
+                            value={userRegistration.username}
                             sx={{ ariaLabel: 'username' }}
                         />
                     </FormControl>
@@ -128,7 +151,7 @@ function CreateAccount() {
                         // color={passwordError ? 'error' : 'primary'}
                         />
                     </FormControl>
-                    <FormControl>
+                    {/* <FormControl>
                         <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
                             <FormLabel htmlFor="password">Confirm Password</FormLabel>
                         </Box>
@@ -145,15 +168,14 @@ function CreateAccount() {
                             onChange={handleConfirmPassword}
                             value={userRegistration.confirmPassword}
                         />
-                    </FormControl>
+                    </FormControl> */}
                     <Button
                         // type="submit"
                         fullWidth
-                        variant="contained"
-                    // sx={{ backgroundColor: 'red' }}
-                    // onClick={validateInputs}
+                        // variant="contained"
+                        onClick={registerUser}
                     >
-                        Create Account
+                        Register
                     </Button>
                 </Box>
             </MuiCard>
@@ -161,4 +183,4 @@ function CreateAccount() {
     )
 }
 
-export default CreateAccount
+export default Register

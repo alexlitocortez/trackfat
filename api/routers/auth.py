@@ -22,10 +22,9 @@ def user_helper(user) -> dict:
         "password": user["password"]
     }
 
-
-@router.post("/register")
+# Endpoint to create user
+@router.post("/api/register")
 async def create_user(user: UserCreate):
-    # user.created_at = user.created_at or datetime.now()
     existing_user = users_collection.find_one({"$or": [{"email": user.email}, {"username": user.username}]})
 
     if existing_user:
@@ -38,7 +37,8 @@ async def create_user(user: UserCreate):
     created_user = users_collection.find_one({"_id": new_user.inserted_id})
     return user_helper(created_user)
 
-@router.get("/users")
+# Endpoint to retrieve users from MongoDB
+@router.get("/api/users")
 def get_users():
     users = []
     for user in users_collection.find():
@@ -46,8 +46,7 @@ def get_users():
     return users
 
 
-
-@router.post("/token")
+@router.post("/api/token")
 async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends()):
     user = users_db.get(form_data.username)
     if user is None or user.password != form_data.password:
@@ -55,12 +54,7 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
     access_token = create_access_token(data={"sub": user.username})
     return {"access_token": access_token, "token_type": "bearer"}
 
-@router.get("/protected")
+
+@router.get("/api/protected")
 async def protected_route(username: str = Depends(get_current_user)):
     return {"message": f"Hello, {username}! This is a protected resource."}
-
-
-# SIMPLE BASIC AUTH
-# @router.get("/protected")
-# def read_current_user(credentials: Annotated[HTTPBasicCredentials, Depends(security)]):
-#     return {"username": credentials.username, "password": credentials.password}
