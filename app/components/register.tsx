@@ -1,17 +1,16 @@
 "use client"
 
 import React, { useState } from 'react'
-
 import Box from '@mui/material/Box';
 import MuiCard from '@mui/material/Card';
 import Typography from '@mui/material/Typography';
 import FormControl from '@mui/material/FormControl';
-import FormLabel from '@mui/material/FormLabel';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import instance from '../helpers/axiosInstance';
-import axios from 'axios';
-import { error } from 'console';
+import { useRouter } from 'next/navigation';
+import CircularProgress from '@mui/material/CircularProgress';
+
 
 interface UserRegistration {
     username: string
@@ -21,12 +20,14 @@ interface UserRegistration {
 }
 
 function Register() {
+    const navigate = useRouter()
     const [userRegistration, setUserRegistration] = useState<UserRegistration>({
         username: '',
         email: '',
         password: '',
         confirmPassword: ''
     })
+    const [loading, setLoading] = useState(false)
 
     const registerUser = () => {
         instance.post('/register', {
@@ -36,6 +37,15 @@ function Register() {
         })
             .then(function (res) {
                 console.log("res", res.data)
+
+                if (res) {
+                    setTimeout(() => {
+                        setLoading(true)
+                    }, 3000)
+                    navigate.push('/bodyfat')
+                } else {
+                    console.error("Redirect failed")
+                }
             })
             .catch((error) => {
                 console.log("error", error)
@@ -71,15 +81,14 @@ function Register() {
         })
     }
 
-    console.log("password", userRegistration.password)
-
     return (
         <div>
-            <MuiCard variant='outlined' sx={{ padding: '1rem' }}>
+            <MuiCard variant='outlined' sx={{ padding: '2rem' }}>
+
                 <Typography
                     component="h1"
                     variant="h4"
-                    sx={{ width: '100%', fontSize: 'clamp(2rem, 10vw, 2.15rem)' }}
+                    sx={{ width: '100%', fontSize: 'clamp(2rem, 10vw, 2.15rem)', marginBottom: '1rem' }}
                 >
                     Register
                 </Typography>
@@ -94,92 +103,48 @@ function Register() {
                         gap: 2,
                     }}
                 >
+                    {loading ? (
+                        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                            <CircularProgress />
+                        </div>
+                    ) : null}
                     <FormControl>
-                        <FormLabel htmlFor="username">Username</FormLabel>
                         <TextField
-                            id="username"
-                            type="username"
-                            name="username"
-                            placeholder="Enter Username"
                             required
-                            fullWidth
+                            label="Username"
                             variant="outlined"
+                            // helperText="Please enter your username"
                             onChange={handleUsername}
                             value={userRegistration.username}
-                            sx={{ ariaLabel: 'username' }}
                         />
                     </FormControl>
                     <FormControl>
-                        <FormLabel htmlFor="email">Email</FormLabel>
                         <TextField
-                            // error={emailError}
-                            // helperText={emailErrorMessage}
-                            id="email"
-                            type="email"
-                            name="email"
-                            placeholder="your@email.com"
-                            autoComplete="email"
-                            autoFocus
                             required
-                            fullWidth
+                            label="Email"
                             variant="outlined"
                             onChange={handleEmail}
                             value={userRegistration.email}
-                            // color={emailError ? 'error' : 'primary'}
-                            sx={{ ariaLabel: 'email' }}>
-
-                        </TextField>
+                        />
                     </FormControl>
                     <FormControl>
-                        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                            <FormLabel htmlFor="password">Password</FormLabel>
-                        </Box>
                         <TextField
-                            // error={passwordError}
-                            // helperText={passwordErrorMessage}
-                            name="password"
-                            placeholder="••••••"
-                            type="password"
-                            id="password"
-                            autoComplete="current-password"
-                            autoFocus
+                            label="Password"
                             required
-                            fullWidth
                             variant="outlined"
                             onChange={handlePassword}
                             value={userRegistration.password}
-                        // color={passwordError ? 'error' : 'primary'}
                         />
                     </FormControl>
-                    {/* <FormControl>
-                        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                            <FormLabel htmlFor="password">Confirm Password</FormLabel>
-                        </Box>
-                        <TextField
-                            name="confirm-password"
-                            placeholder="••••••"
-                            type="password"
-                            id="password"
-                            autoComplete="confirm-password"
-                            autoFocus
-                            required
-                            fullWidth
-                            variant="outlined"
-                            onChange={handleConfirmPassword}
-                            value={userRegistration.confirmPassword}
-                        />
-                    </FormControl> */}
                     <Button
-                        // type="submit"
                         fullWidth
-                        // variant="contained"
                         onClick={registerUser}
                     >
                         Register
                     </Button>
                 </Box>
             </MuiCard>
-        </div>
+        </div >
     )
 }
 
