@@ -30,6 +30,10 @@ function Register() {
     const [loading, setLoading] = useState(false)
 
     const registerUser = () => {
+        setTimeout(() => {
+            setLoading(false)
+        }, 3000)
+        setLoading(true)
         instance.post('/register', {
             username: userRegistration.username,
             email: userRegistration.email,
@@ -39,12 +43,10 @@ function Register() {
                 console.log("res", res.data)
 
                 if (res) {
-                    setTimeout(() => {
-                        setLoading(true)
-                    }, 3000)
                     navigate.push('/bodyfat')
                 } else {
                     console.error("Redirect failed")
+                    setLoading(false)
                 }
             })
             .catch((error) => {

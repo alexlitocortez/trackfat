@@ -31,7 +31,7 @@ handler = Mangum(app)
 
 # CALCULATIONS I WANT TO MAKE
     # Configure authentication (1)
-        # Created loader when user registers and is redirected to bodyfat page
+        # Figure out why spinner isn't showing when registering
         # Create login endpoint
         # Create logout endpoint
         # Create required 6 characters for password input in register page
