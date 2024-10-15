@@ -1,6 +1,6 @@
 "use client";
 
-import React from 'react'
+import React, { useState } from 'react'
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import FormLabel from '@mui/material/FormLabel';
@@ -9,11 +9,65 @@ import TextField from '@mui/material/TextField';
 import MuiCard from '@mui/material/Card';
 import Typography from '@mui/material/Typography';
 import Link from '@mui/material/Link';
+import { useRouter } from 'next/navigation';
+import CircularProgress from '@mui/material/CircularProgress';
+import instance from '../helpers/axiosInstance';
+
+interface UserLogin {
+    email: string
+    password: string
+}
 
 function Login() {
+    const navigate = useRouter()
+    const [loading, setLoading] = useState(false)
+    const [userLogin, setUserLogin] = useState<UserLogin>({
+        email: '',
+        password: ''
+    })
+
+    const loginUser = () => {
+        setTimeout(() => {
+            setLoading(false)
+        }, 3000)
+        setLoading(true)
+        instance.post('/login', {
+            email: userLogin.email,
+            password: userLogin.password
+        })
+            .then(function (res) {
+                console.log("res", res.data)
+
+                if (res) {
+                    navigate.push('/bodyfat')
+                } else {
+                    console.error("Redirect failed")
+                    setLoading(false)
+                }
+            })
+            .catch((error) => {
+                console.log("error", error)
+            })
+    }
+
+    const handleEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setUserLogin({
+            ...userLogin,
+            email: e.target.value
+        })
+    };
+
+    const handlePassword = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setUserLogin({
+            ...userLogin,
+            password: e.target.value
+        })
+    }
+
+
     return (
         <div>
-            <MuiCard variant='outlined'>
+            <MuiCard variant='outlined' sx={{ padding: '2rem' }}>
                 <Typography
                     component="h1"
                     variant="h4"
@@ -23,7 +77,6 @@ function Login() {
                 </Typography>
                 <Box
                     component="form"
-                    // onSubmit={handleSubmit}
                     noValidate
                     sx={{
                         display: 'flex',
@@ -32,30 +85,24 @@ function Login() {
                         gap: 2,
                     }}
                 >
+                    {loading ? (
+                        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                            <CircularProgress />
+                        </div>
+                    ) : null}
                     <FormControl>
-                        <FormLabel htmlFor="email">Email</FormLabel>
                         <TextField
-                            // error={emailError}
-                            // helperText={emailErrorMessage}
-                            id="email"
-                            type="email"
-                            name="email"
-                            placeholder="your@email.com"
-                            autoComplete="email"
-                            autoFocus
                             required
-                            fullWidth
+                            label="Email"
                             variant="outlined"
-                            // color={emailError ? 'error' : 'primary'}
-                            sx={{ ariaLabel: 'email' }}
+                            onChange={handleEmail}
+                            value={userLogin.email}
                         />
                     </FormControl>
                     <FormControl>
                         <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                            <FormLabel htmlFor="password">Password</FormLabel>
                             <Link
                                 component="button"
-                                // onClick={handleClickOpen}
                                 variant="body2"
                                 sx={{ alignSelf: 'baseline' }}
                             >
@@ -63,25 +110,16 @@ function Login() {
                             </Link>
                         </Box>
                         <TextField
-                            // error={passwordError}
-                            // helperText={passwordErrorMessage}
-                            name="password"
-                            placeholder="••••••"
-                            type="password"
-                            id="password"
-                            autoComplete="current-password"
-                            autoFocus
                             required
-                            fullWidth
+                            label="Password"
                             variant="outlined"
-                        // color={passwordError ? 'error' : 'primary'}
+                            onChange={handlePassword}
+                            value={userLogin.password}
                         />
                     </FormControl>
                     <Button
-                        type="submit"
                         fullWidth
-                        variant="contained"
-                    // onClick={validateInputs}
+                        onClick={loginUser}
                     >
                         Sign in
                     </Button>
