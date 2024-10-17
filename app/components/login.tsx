@@ -14,7 +14,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import instance from '../helpers/axiosInstance';
 
 interface UserLogin {
-    email: string
+    username: string
     password: string
 }
 
@@ -22,21 +22,27 @@ function Login() {
     const navigate = useRouter()
     const [loading, setLoading] = useState(false)
     const [userLogin, setUserLogin] = useState<UserLogin>({
-        email: '',
+        username: '',
         password: ''
     })
 
     const loginUser = () => {
         setTimeout(() => {
             setLoading(false)
-        }, 3000)
+        }, 5000)
         setLoading(true)
-        instance.post('/login', {
-            email: userLogin.email,
-            password: userLogin.password
+
+        const formData = new URLSearchParams();
+        formData.append('username', userLogin.username);
+        formData.append('password', userLogin.password)
+
+        instance.post('/token', formData, {
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded'
+            }
         })
             .then(function (res) {
-                console.log("res", res.data)
+                console.log("res", res)
 
                 if (res) {
                     navigate.push('/bodyfat')
@@ -50,10 +56,10 @@ function Login() {
             })
     }
 
-    const handleEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleUsername = (e: React.ChangeEvent<HTMLInputElement>) => {
         setUserLogin({
             ...userLogin,
-            email: e.target.value
+            username: e.target.value
         })
     };
 
@@ -64,6 +70,8 @@ function Login() {
         })
     }
 
+    console.log("username", userLogin.username)
+    console.log("password", userLogin.password)
 
     return (
         <div>
@@ -93,10 +101,10 @@ function Login() {
                     <FormControl>
                         <TextField
                             required
-                            label="Email"
+                            label="Username"
                             variant="outlined"
-                            onChange={handleEmail}
-                            value={userLogin.email}
+                            onChange={handleUsername}
+                            value={userLogin.username}
                         />
                     </FormControl>
                     <FormControl>

@@ -32,7 +32,7 @@ handler = Mangum(app)
 # CALCULATIONS I WANT TO MAKE
     # Configure authentication (1)
         # Create login endpoint
-            # Figure out why login endpoint returns same response no matter the login credentials
+            # test login endpoint
         # Create logout endpoint
         # Create required 6 characters for password input in register page
         # Figure out why users need token for login
