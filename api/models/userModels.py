@@ -19,9 +19,15 @@ class UserCreate(BaseModel):
             }
         }
 
+class token(BaseModel):
+    token: str 
+
 class UserLogin(BaseModel):
     email: EmailStr
     password: str = Field(..., min_length=6)
 
 class UserInDB(UserCreate):
     hashed_password: str
+
+class LogoutRequest(BaseModel):
+    token: str

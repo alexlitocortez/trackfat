@@ -38,13 +38,18 @@ function Login() {
 
         instance.post('/token', formData, {
             headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': `Bearer ${localStorage.getItem('token')}`,
             }
         })
             .then(function (res) {
                 console.log("res", res)
 
                 if (res) {
+
+                    // Saves token to localStorage
+                    const token = res.data.access_token;
+                    localStorage.setItem('token', token)
                     navigate.push('/bodyfat')
                 } else {
                     console.error("Redirect failed")
@@ -69,9 +74,6 @@ function Login() {
             password: e.target.value
         })
     }
-
-    console.log("username", userLogin.username)
-    console.log("password", userLogin.password)
 
     return (
         <div>

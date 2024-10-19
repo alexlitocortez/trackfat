@@ -6,8 +6,9 @@ from jwt.exceptions import InvalidTokenError
 from passlib.context import CryptContext
 from pydantic import BaseModel
 from ..data.users import users_db
-from ..models.userModels import UserCreate, UserLogin, UserInDB
+from ..models.userModels import UserCreate, UserLogin, UserInDB, token
 from ..database import users_collection
+from jose.exceptions import JWTError
 import jwt
 
 router = APIRouter()
@@ -34,6 +35,31 @@ def create_access_token(data: dict):
     to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
+
+
+def get_current_user_token(token: str = Depends(oauth2_scheme)):
+    # login_for_access_token(token)
+    return token
+
+
+def get_current_user(token: str = Depends(oauth2_scheme)):
+    credentials_exception = HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Could not validate credentials",
+        headers={"WWW-Authenticate": "Bearer"}
+    )
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        username: str = payload.get("sub")
+        if username is None:
+            raise credentials_exception
+    except JWTError:
+        raise credentials_exception
+    user = get_user(username)
+    if user is None:
+        raise credentials_exception
+    return user
+
 
 def authenticate_user(username: str, password: str):
     user = users_collection.find_one({"username": username})
@@ -79,13 +105,12 @@ async def create_user(user: UserCreate):
     user_data = user.model_dump()
     user_data["hashed_password"] = hashed_password
 
-
     new_user = users_collection.insert_one(user_data)
     created_user = users_collection.find_one({"_id": new_user.inserted_id})
     return user_helper(created_user)
 
 # Endpoint to retrieve users from MongoDB
-@router.get("/api/users")
+@router.get("/api/get-users")
 def get_users():
     users = []
     for user in users_collection.find():
@@ -108,7 +133,16 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
     return {"access_token": access_token, "token_type": "bearer"}
 
 
-# @router.get("/api/protected")
-# async def protected_route(username: str = Depends(get_current_user)):
-#     return {"message": f"Hello, {username}! This is a protected resource."}
+# Protects routes by making sure each request has a token
+@router.get("/api/protected")
+async def read_protected(user: str = Depends(get_current_user)):
+    return {"message": "This is a protected resource", "user": user}
 
+
+@router.post("/api/logout")
+def logout():
+    return get_current_user_token()
+
+
+# Is the logout function POST or GET
+    # Believe it's a POST function as we need to POST token in database which will in turn return a confirmation message
