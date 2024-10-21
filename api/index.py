@@ -31,9 +31,7 @@ handler = Mangum(app)
 
 # CALCULATIONS I WANT TO MAKE
     # Configure authentication (1)
-        # Create logout endpoint
-            # Token should be removed from client-side
-                # Add token schema to logout function so token is part of blacklisted tokens when logging out
+        # Create Refresh Token
         # Figure out what is URL searchParams
         # Create required 6 characters for password input in register page
         # Figure out why users need token for login

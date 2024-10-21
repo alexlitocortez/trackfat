@@ -1,7 +1,7 @@
 from pydantic import BaseModel, EmailStr, Field
 from typing import Literal, Optional
 from bson import ObjectId
-from datetime import datetime
+from datetime import date, datetime, time, timedelta
 from passlib.context import CryptContext
 
 class UserCreate(BaseModel):
@@ -20,7 +20,14 @@ class UserCreate(BaseModel):
         }
 
 class token(BaseModel):
-    token: str 
+    expired_token: str
+    refresh_token: str
+
+class TokenCreate(BaseModel):
+    access_token: str
+    refresh_token: str
+    status: bool
+    created_date: datetime
 
 class UserLogin(BaseModel):
     email: EmailStr
@@ -29,5 +36,7 @@ class UserLogin(BaseModel):
 class UserInDB(UserCreate):
     hashed_password: str
 
-class LogoutRequest(BaseModel):
-    token: str
+
+
+
+

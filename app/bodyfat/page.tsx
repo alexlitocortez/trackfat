@@ -24,13 +24,19 @@ function page() {
         fetchData()
     })
 
+    console.log("token", token)
+
     const logout = () => {
-        instance.post('/logout')
+        instance.post('/logout', {
+            expired_token: token
+        })
             .then(function (res) {
                 console.log("res", res)
 
                 if (res) {
                     navigate.push('/')
+                } else {
+                    console.error("Redirect failed")
                 }
             })
             .catch((error) => {

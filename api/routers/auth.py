@@ -7,7 +7,7 @@ from passlib.context import CryptContext
 from pydantic import BaseModel
 from ..data.users import users_db
 from ..models.userModels import UserCreate, UserLogin, UserInDB, token
-from ..database import users_collection
+from ..database import users_collection, blacklisted_tokens
 from jose.exceptions import JWTError
 import jwt
 
@@ -16,8 +16,11 @@ router = APIRouter()
 security = HTTPBasic()
 
 SECRET_KEY = "75101dc6b276c6ed0940f54cdbada1373dfde4787c0dd95143f5cd56aec95285"
+SECRET_KEY_REFRESH = "c4dfae0f0b534667677932d6fe071312ca47efed7efaf11d40038ef5bf9cfd4e"
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
+REFRESH_TOKEN_EXPIRE_MINUTES = 1440  
+
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
@@ -36,12 +39,21 @@ def create_access_token(data: dict):
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
 
+def create_refresh_token(data: dict):
+    to_encode = data.copy()
+    expire = datetime.utcnow() + timedelta(minutes=REFRESH_TOKEN_EXPIRE_MINUTES)
+    to_encode.update({"exp": expire})
+    encoded_jwt = jwt.encode(to_encode, SECRET_KEY_REFRESH, algorithm=ALGORITHM)
+    return encoded_jwt
+
 
 def get_current_user_token(token: str = Depends(oauth2_scheme)):
     # login_for_access_token(token)
-    return token
+    print("token", token)
+    # return token
 
 
+# Helper function for protected routes
 def get_current_user(token: str = Depends(oauth2_scheme)):
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
@@ -82,6 +94,11 @@ def user_login(user) -> dict:
     return {
         "email": user["email"],
         "password": user["password"]
+    }
+
+def token_helper(token) -> dict:
+    return {
+        "expired_token": token["expired_token"]
     }
 
 def get_user(db, username: str):
@@ -129,8 +146,9 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
         )
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     # access_token = create_access_token(data={"sub": user["username"]}, expires_delta=access_token_expires)
-    access_token = create_access_token(data={"sub": user["username"]})
-    return {"access_token": access_token, "token_type": "bearer"}
+    access_token = create_access_token(data={"sub": user["username"]},)
+    refresh_token = create_refresh_token(data={"sub": user["username"]})
+    return {"access_token": access_token, "refresh_token": refresh_token, "token_type": "bearer"}
 
 
 # Protects routes by making sure each request has a token
@@ -140,9 +158,12 @@ async def read_protected(user: str = Depends(get_current_user)):
 
 
 @router.post("/api/logout")
-def logout():
-    return get_current_user_token()
+def logout(token: token):
+    expired_token = token.model_dump()
+    new_expired_token = blacklisted_tokens.insert_one(expired_token)
+    created_expired_token = blacklisted_tokens.find_one({"_id": new_expired_token.inserted_id})
+    return token_helper(created_expired_token)
 
 
-# Is the logout function POST or GET
-    # Believe it's a POST function as we need to POST token in database which will in turn return a confirmation message
+
+# Send token to backend to database when user hits logout button
