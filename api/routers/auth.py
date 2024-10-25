@@ -6,8 +6,8 @@ from jwt.exceptions import InvalidTokenError
 from passlib.context import CryptContext
 from pydantic import BaseModel
 from ..data.users import users_db
-from ..models.userModels import UserCreate, UserLogin, UserInDB, token
-from ..database import users_collection, blacklisted_tokens
+from ..models.userModels import UserCreate, UserLogin, UserInDB, token, TokenCreate
+from ..database import users_collection, blacklisted_tokens, get_users_collection
 from jose.exceptions import JWTError
 import jwt
 
@@ -47,33 +47,34 @@ def create_refresh_token(data: dict):
     return encoded_jwt
 
 
-def get_current_user_token(token: str = Depends(oauth2_scheme)):
-    # login_for_access_token(token)
-    print("token", token)
-    # return token
-
-
-# Helper function for protected routes
-def get_current_user(token: str = Depends(oauth2_scheme)):
+async def get_current_user(token: str = Depends(oauth2_scheme), users=Depends(get_users_collection)):
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
-        headers={"WWW-Authenticate": "Bearer"}
+        headers={"WWW-Authenticate": "Bearer"},
     )
+
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         username: str = payload.get("sub")
         if username is None:
             raise credentials_exception
+        
     except JWTError:
         raise credentials_exception
-    user = get_user(username)
+    
+    if users is None:
+        raise HTTPException(status_code=500, detail="Users collection not available")
+
+    user = await users.find_one({"username": username})
+
     if user is None:
         raise credentials_exception
+    
     return user
 
 
-def authenticate_user(username: str, password: str):
+def authenticate_user(username: str, token: TokenCreate):
     user = users_collection.find_one({"username": username})
     if user is None:
         return False
@@ -146,14 +147,15 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
         )
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     # access_token = create_access_token(data={"sub": user["username"]}, expires_delta=access_token_expires)
-    access_token = create_access_token(data={"sub": user["username"]},)
+    access_token = create_access_token(data={"sub": user["username"]})
     refresh_token = create_refresh_token(data={"sub": user["username"]})
     return {"access_token": access_token, "refresh_token": refresh_token, "token_type": "bearer"}
 
 
 # Protects routes by making sure each request has a token
 @router.get("/api/protected")
-async def read_protected(user: str = Depends(get_current_user)):
+async def read_protected(user: dict = Depends(get_current_user)):
+    # return "hello guyger"
     return {"message": "This is a protected resource", "user": user}
 
 
@@ -163,7 +165,3 @@ def logout(token: token):
     new_expired_token = blacklisted_tokens.insert_one(expired_token)
     created_expired_token = blacklisted_tokens.find_one({"_id": new_expired_token.inserted_id})
     return token_helper(created_expired_token)
-
-
-
-# Send token to backend to database when user hits logout button

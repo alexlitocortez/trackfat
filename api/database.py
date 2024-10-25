@@ -16,6 +16,9 @@ lifestyle_collection = db["lifestyle"]
 users_collection = db["users"]
 blacklisted_tokens = db["blacklisted_tokens"]
 
+def get_users_collection():
+    return users_collection
+
 df = pd.read_csv('/Users/alexcortez/Desktop/projects/nextjs-fastapi/api/csv/Sleep_health_and_lifestyle_dataset.csv')
 
 data = df.to_dict(orient="records")

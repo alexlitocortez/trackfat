@@ -21,7 +21,7 @@ class UserCreate(BaseModel):
 
 class token(BaseModel):
     expired_token: str
-    refresh_token: str
+    # refresh_token: str
 
 class TokenCreate(BaseModel):
     access_token: str

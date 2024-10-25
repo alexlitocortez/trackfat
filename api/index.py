@@ -31,11 +31,10 @@ handler = Mangum(app)
 
 # CALCULATIONS I WANT TO MAKE
     # Configure authentication (1)
-        # Create Refresh Token
+        # Figure out how to implement protected routes
         # Figure out what is URL searchParams
         # Create required 6 characters for password input in register page
         # Figure out why users need token for login
-        # Figure out protected routes
     # Add calculator to determine how long to get to specific bf percentage (2)
     # Containerize either the frontend/backend/database (3)
     # Get sleep disorder field
