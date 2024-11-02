@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from .routers import auth, bodyfat
+from .routers import auth, bodyfat, users
 from mangum import Mangum
 
 app = FastAPI()
@@ -24,7 +24,8 @@ app.add_middleware(
 )
 
 app.include_router(bodyfat.router)
-app.include_router(auth.router) 
+app.include_router(auth.router)
+app.include_router(users.router) 
 
 handler = Mangum(app)
 
@@ -32,6 +33,8 @@ handler = Mangum(app)
 # CALCULATIONS I WANT TO MAKE
     # Configure authentication (1)
         # Figure out how to implement protected routes
+            # Problem is in the get_current_user function
+        # Figure out dynamic routing
         # Figure out what is URL searchParams
         # Create required 6 characters for password input in register page
         # Figure out why users need token for login

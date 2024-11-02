@@ -1,10 +1,12 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends, Request
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm, HTTPBasic
 from api.helper.crud import get_items, get_new_items, get_bodyfat_category, get_womens_bodyfat, get_lifestyle_items
 from ..database import db, bodyfat_collection
 from typing import List
 import pandas as pd
 import numpy as np
 import logging
+from .auth import get_current_user, protected_route, verify_token
 
 
 router = APIRouter()
@@ -18,6 +20,8 @@ newItems = get_new_items()
 
 lifestyleItems = get_lifestyle_items()
 
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+
 
 @router.get('/api/lifestyle')
 def return_lifestyle_df():
@@ -30,7 +34,7 @@ def return_lifestyle_df():
 
 
 @router.get('/api/df')
-def return_df():
+def return_df(current_user: dict = Depends(get_current_user)):
 
     # Convert the list of Item objects to a Dataframe
     df = pd.DataFrame([item.dict() for item in items])

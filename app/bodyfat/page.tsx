@@ -16,7 +16,7 @@ function page() {
 
     useEffect(() => {
         const fetchData = async () => {
-            const token = localStorage.getItem('token');
+            const token = localStorage?.getItem('token');
 
             setToken(token)
         }
@@ -24,11 +24,9 @@ function page() {
         fetchData()
     })
 
-    console.log("token", token)
-
     const logout = () => {
         instance.post('/logout', {
-            expired_token: token
+            expired_token: token,
         })
             .then(function (res) {
                 console.log("res", res)
@@ -55,7 +53,7 @@ function page() {
                     <button className='text-white bg-black rounded m-1 p-3' onClick={() => router.push('/home')}>Home</button>
                     <button className='text-white bg-black rounded m-1 p-3' onClick={() => router.push('/lifestyle')}>Lifestyle Dataset</button>
                     <Dropdown average={average} setAverage={setAverage} data={data} setData={setData} />
-                    <DataTable />
+                    <DataTable token={token} />
                 </div>
             </div>
         </div>

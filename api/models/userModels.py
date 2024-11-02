@@ -23,6 +23,9 @@ class token(BaseModel):
     expired_token: str
     # refresh_token: str
 
+class TokenData(BaseModel):
+    username: Optional[str] = None
+
 class TokenCreate(BaseModel):
     access_token: str
     refresh_token: str
