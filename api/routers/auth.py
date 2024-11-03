@@ -50,39 +50,15 @@ def create_refresh_token(data: dict):
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY_REFRESH, algorithm=ALGORITHM)
     return encoded_jwt
 
+def fake_decode_token(token):
+    return UserCreate(
+        username=token + "fakedecoded", email="john@example.com", password="John Doe"
+    )
+
 
 def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
 # I'm able to get token string but it shows the key "expired token" key with it. Try using it with "Depends" protected route now
-    try:
-        payload = jwt.decode(token.expired_token, SECRET_KEY, algorithms=[ALGORITHM])
-        username = payload.get("sub")
-        if username is None:
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Invalid token: username not found",
-                headers={"WWW-Authenticate": "Bearer"},
-            )
-        token_data = TokenData(username=username)
-        # print("Token Type:", type(token))
-        # print("taki taki", token)
-        # print("payload", payload)
-        # print("username", username)
-
-    except jwt.InvalidTokenError:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Could not validate credentials",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
-    
-    user = get_user(token_data.username)
-    if user is None:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="User not found",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
-
+    user = fake_decode_token(token)
     return user
 
 
@@ -118,26 +94,6 @@ def get_user(db, username: str):
     if username in db:
         user_dict = db[username]
         return UserInDB(**user_dict)
-
-# Endpoint to create user
-@router.post("/api/register")
-async def create_user(user: UserCreate):
-    existing_user = users_collection.find_one({"$or": [{"email": user.email}, {"username": user.username}]})
-
-    if existing_user:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Username or email already exists"
-        )
-    
-    hashed_password = hash_password(user.password)
-    
-    user_data = user.model_dump()
-    user_data["hashed_password"] = hashed_password
-
-    new_user = users_collection.insert_one(user_data)
-    created_user = users_collection.find_one({"_id": new_user.inserted_id})
-    return user_helper(created_user)
 
 
 @router.post("/api/token")
