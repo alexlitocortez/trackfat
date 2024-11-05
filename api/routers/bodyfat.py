@@ -34,7 +34,7 @@ def return_lifestyle_df():
 
 
 @router.get('/api/df')
-def return_df(current_user: dict = Depends(get_current_user)):
+def return_df():
 
     # Convert the list of Item objects to a Dataframe
     df = pd.DataFrame([item.dict() for item in items])

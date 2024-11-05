@@ -1,13 +1,18 @@
 from fastapi import APIRouter, HTTPException, Depends, status
+from fastapi.security import OAuth2PasswordBearer
 from ..database import users_collection
 from bson import ObjectId
 from ..database import users_collection
 from ..models.userModels import UserCreate
 from passlib.context import CryptContext
 from datetime import datetime
+from .auth import get_current_user, protected_route, verify_token
+from typing import Annotated
 
 
 router = APIRouter()
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 def user_helper(user) -> dict:
     return {
@@ -32,7 +37,7 @@ def validate_object_id(user_id: str):
 
 # Endpoint to retrieve users from MongoDB
 @router.get("/api/get-users")
-def get_users():
+def get_users(current_users: Annotated[str, Depends(oauth2_scheme)]):
     users = []
     for user in users_collection.find():
         users.append(user_helper(user))

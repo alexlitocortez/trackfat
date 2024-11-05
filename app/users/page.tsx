@@ -10,6 +10,7 @@ import { error } from 'console';
 
 
 interface UserData {
+    id: string;
     name?: string | null;
 }
 
@@ -56,6 +57,19 @@ function page() {
             })
     }
 
+    const deleteUser = (userId: string) => {
+        instance.delete(`/users/${userId}`)
+            .then(res => {
+                console.log("User deleted:", res)
+                setUsers(users.filter(user => user.id !== userId))
+                console.log("userId success", userId)
+            })
+            .catch(error => {
+                console.error("Error deleting user:", error)
+                console.log("userId error", userId)
+            })
+    }
+
     const handleUsername = (e: React.ChangeEvent<HTMLInputElement>) => {
         setAddUser({
             ...addUser,
@@ -79,7 +93,7 @@ function page() {
 
 
     return (
-        <div>
+        <div className='flex flex-col items-center'>
             <div className='flex flex-row'>
                 <button className='bg-white text-black' onClick={addUserButton}>Add User</button>
                 {
@@ -121,7 +135,7 @@ function page() {
                     <li key={index}>
                         <div className='flex flex-row'>
                             {user.name}
-                            <button className='bg-white text-black'>Delete User</button>
+                            <button className='bg-white text-black' onClick={() => deleteUser(user.id)}>Delete User</button>
                         </div>
                     </li>
                 )

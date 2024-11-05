@@ -34,9 +34,6 @@ handler = Mangum(app)
     # Configure authentication (1)
         # Figure out how to implement protected routes
             # Problem is in the get_current_user function
-        # Add "delete user function"
-            # Figure out how to dynamically add and delete user information
-        # Add "add user function"
         # Figure out dynamic routing
         # Figure out what is URL searchParams
         # Create required 6 characters for password input in register page

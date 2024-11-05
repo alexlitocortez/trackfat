@@ -52,7 +52,7 @@ def create_refresh_token(data: dict):
 
 def fake_decode_token(token):
     return UserCreate(
-        username=token + "fakedecoded", email="john@example.com", password="John Doe"
+        username="johndoe", email="john@example.com", password="John Doe", token=token
     )
 
 
