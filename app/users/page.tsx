@@ -31,7 +31,12 @@ function page() {
     const [clickUserButton, setClickUserButton] = useState(Boolean)
 
     useEffect(() => {
-        instance.get('/get-users')
+        const token = localStorage?.getItem('token');
+        instance.get('/get-users', {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        })
             .then(function (res) {
                 setUsers(res.data)
             })

@@ -35,7 +35,6 @@ def validate_object_id(user_id: str):
     return ObjectId(user_id)
 
 
-# Endpoint to retrieve users from MongoDB
 @router.get("/api/get-users")
 def get_users(current_users: Annotated[str, Depends(oauth2_scheme)]):
     users = []
