@@ -10,19 +10,24 @@ function page() {
     const navigate = useRouter()
     const [average, setAverage] = useState<string | undefined>()
     const [data, setData] = useState<number | undefined>()
-    const [token, setToken] = useState<string | null>()
+    const [userToken, setUserToken] = useState<string | null>()
 
     const router = useRouter()
 
+    const token = localStorage?.getItem('token');
+
     useEffect(() => {
-        const fetchData = async () => {
-            const token = localStorage?.getItem('token');
+        if (token) {
+            const fetchData = async () => {
 
-            setToken(token)
+                setUserToken(token)
+            }
+
+            fetchData()
+        } else {
+            setData(undefined)
         }
-
-        fetchData()
-    })
+    }, [token])
 
     const logout = () => {
         instance.post('/logout', {
@@ -33,6 +38,11 @@ function page() {
 
                 if (res) {
                     navigate.push('/')
+
+                    localStorage?.removeItem('token')
+
+                    console.log("removed token")
+
                 } else {
                     console.error("Redirect failed")
                 }

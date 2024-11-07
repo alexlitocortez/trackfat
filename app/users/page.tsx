@@ -1,12 +1,11 @@
 "use client"
 
 import React, { useState, useEffect } from 'react'
-import PropTypes from 'prop-types'
 import instance from '../helpers/axiosInstance'
 import Button from '@mui/material/Button';
 import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
-import { error } from 'console';
+import { useRouter } from 'next/navigation';
 
 
 interface UserData {
@@ -22,6 +21,7 @@ interface AddUserData {
 
 
 function page() {
+    const navigate = useRouter()
     const [users, setUsers] = useState<UserData[]>([])
     const [addUser, setAddUser] = useState<AddUserData>({
         username: '',
@@ -30,19 +30,47 @@ function page() {
     })
     const [clickUserButton, setClickUserButton] = useState(Boolean)
 
+    const token = localStorage?.getItem('token');
+
     useEffect(() => {
-        const token = localStorage?.getItem('token');
-        instance.get('/get-users', {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
+        if (token) {
+            instance.get('/get-users', {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
+            })
+                .then(function (res) {
+                    setUsers(res.data)
+
+                    if (!token) {
+                        console.log("no token")
+                    }
+                })
+                .catch(function (error) {
+                    console.log("error", error)
+                })
+        } else {
+            setUsers([]);  // Clear users data if there's no token
+        }
+    }, [token])
+
+    const logout = () => {
+        instance.post('/logout', {
+            expired_token: token
         })
             .then(function (res) {
-                setUsers(res.data)
-            })
-    }, [])
+                console.log("res", res)
 
-    console.log("users", users)
+                localStorage.removeItem('token');
+
+                setUsers([]);
+
+                if (res) {
+                    navigate.push('/')
+                }
+            })
+    }
+
 
     const addUserButton = () => {
         setClickUserButton(!clickUserButton)
@@ -99,6 +127,9 @@ function page() {
 
     return (
         <div className='flex flex-col items-center'>
+            <div className='flex flex-row justify-end p-3'>
+                <button className='text-black bg-white rounded p-4' onClick={logout}>Logout</button>
+            </div>
             <div className='flex flex-row'>
                 <button className='bg-white text-black' onClick={addUserButton}>Add User</button>
                 {

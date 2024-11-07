@@ -37,6 +37,7 @@ def validate_object_id(user_id: str):
 
 @router.get("/api/get-users")
 def get_users(current_users: Annotated[str, Depends(oauth2_scheme)]):
+    print("current users", current_users)
     users = []
     for user in users_collection.find():
         users.append(user_helper(user))

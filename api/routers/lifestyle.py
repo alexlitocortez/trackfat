@@ -12,14 +12,14 @@ logging.basicConfig(level=logging.INFO)
 
 items = get_lifestyle_items()
 
-# @router.get('/api/lifestyle')
-# async def return_lifestyle_df():
+@router.get('/api/lifestyle')
+async def return_lifestyle_df():
 
-#     # df = pd.DataFrame([item.dict() for item in items])
+    df = pd.DataFrame([item.dict() for item in items])
 
-#     print("items", items)
+    print("items", items)
 
-#     # df = df.map(lambda x: str(x).replace('[', '').replace(']', '').replace('"', '') if isinstance(x, str) else x)
+    df = df.map(lambda x: str(x).replace('[', '').replace(']', '').replace('"', '') if isinstance(x, str) else x)
 
-#     # return df.to_dict(orient='records')
+    return df.to_dict(orient='records')
 

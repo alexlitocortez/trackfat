@@ -122,5 +122,4 @@ def logout(token: token):
     expired_token = token.model_dump()
     new_expired_token = blacklisted_tokens.insert_one(expired_token)
     created_expired_token = blacklisted_tokens.find_one({"_id": new_expired_token.inserted_id})
-    get_current_user(token)
     return token_helper(created_expired_token)

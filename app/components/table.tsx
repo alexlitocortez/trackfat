@@ -17,7 +17,7 @@ interface DataTableProps {
     token?: string | null;
 }
 
-const DataTable: React.FC<DataTableProps> = ({ token }) => {
+const DataTable: React.FC<DataTableProps> = () => {
     const [data, setData] = useState<DataRow[]>([]);
     const [columns, setColumns] = useState([
         {
@@ -112,22 +112,27 @@ const DataTable: React.FC<DataTableProps> = ({ token }) => {
         },
     ])
 
+    const token = localStorage?.getItem('token');
+
     useEffect(() => {
-        const token = localStorage?.getItem('token');
-        instance.get('/df', {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        })
-            .then(function (res) {
-                setData(res.data)
-                console.log("res", res)
-                // console.log("token", token)
+        if (token) {
+            instance.get('/df', {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
             })
-            .catch((error) => {
-                console.log("error", error)
-            })
-    }, [])
+                .then(function (res) {
+                    setData(res.data)
+                    console.log("res", res)
+                    // console.log("token", token)
+                })
+                .catch((error) => {
+                    console.log("error", error)
+                })
+        } else {
+            setData([])
+        }
+    }, [token])
 
 
     const addColumn = () => {

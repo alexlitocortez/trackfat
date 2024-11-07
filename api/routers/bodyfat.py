@@ -6,6 +6,7 @@ from typing import List
 import pandas as pd
 import numpy as np
 import logging
+from typing import Annotated
 from .auth import get_current_user, protected_route, verify_token
 
 
@@ -34,8 +35,7 @@ def return_lifestyle_df():
 
 
 @router.get('/api/df')
-def return_df():
-
+def return_df(current_users: Annotated[str, Depends(oauth2_scheme)]):
     # Convert the list of Item objects to a Dataframe
     df = pd.DataFrame([item.dict() for item in items])
 

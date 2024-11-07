@@ -33,7 +33,7 @@ handler = Mangum(app)
 # CALCULATIONS I WANT TO MAKE
     # Configure authentication (1)
         # Figure out how to implement protected routes
-            # Problem is in the get_current_user function
+            # How to send token to logout for bodyfat page so user can logout
         # Figure out dynamic routing
         # Figure out what is URL searchParams
         # Create required 6 characters for password input in register page
