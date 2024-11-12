@@ -8,31 +8,39 @@ def get_lifestyle_items():
         lifestyle_items_list = []
 
         for lifestyle_item in lifestyle_items:
-        #     sleep_disorder = lifestyle_item['Sleep Disorder', None]
-        # if sleep_disorder not in ['Sleep Apnea', 'Insomnia', None]:
-        #     sleep_disorder = None 
-            
+
             lifestyle_item['_id'] = str(lifestyle_item['_id'])
+            lifestyle_item['Gender'] = str(lifestyle_item.get('Gender', 'unknown'))
+            lifestyle_item['Occupation'] = str(lifestyle_item.get('Occupation', 'unknown'))
+            lifestyle_item['BMI_Category'] = str(lifestyle_item.get('BMI_Category', 'unknown'))
+            lifestyle_item['Blood_Pressure'] = str(lifestyle_item.get('Blood_Pressure', 'unknown'))
+
+            sleep_disorder = lifestyle_item.get('Sleep Disorder')
+            if sleep_disorder not in ['Sleep Apnea', 'Insomnia']:
+                sleep_disorder = None
+
             lifestyle_item_data = LifestyleItem(
                 id=lifestyle_item['_id'],
                 Person_ID=lifestyle_item['Person ID'],
                 Gender=lifestyle_item['Gender'],
                 Age=lifestyle_item['Age'],
                 Occupation=lifestyle_item['Occupation'],
-                Sleep_Duration=lifestyle_item['Sleep Duration'],
-                Quality_Of_Sleep=lifestyle_item['Quality of Sleep'],
-                Physical_Activity_Level=lifestyle_item['Physical Activity Level'],
-                Stress_Level=lifestyle_item['Stress Level'],
-                BMI_Category=lifestyle_item['BMI Category'],
-                Blood_Pressure=lifestyle_item['Blood Pressure'],
-                Heart_Rate=lifestyle_item['Heart Rate'],
-                Daily_Steps=lifestyle_item['Daily Steps'],
-                # Sleep_Disorder=lifestyle_item["Sleep Apnea", "Insomnia"]
+                Sleep_Duration=lifestyle_item['Sleep_Duration'],
+                Quality_Of_Sleep=lifestyle_item['Quality_Of_Sleep'],
+                Physical_Activity_Level=lifestyle_item['Physical_Activity_Level'],
+                Stress_Level=lifestyle_item['Stress_Level'],
+                BMI_Category=lifestyle_item['BMI_Category'],
+                Blood_Pressure=lifestyle_item['Blood_Pressure'],
+                Heart_Rate=lifestyle_item['Heart_Rate'],
+                Daily_Steps=lifestyle_item['Daily_Steps'],
+                Sleep_Disorder=['Sleep Apnea', 'Insomnia']
             )
             lifestyle_items_list.append(lifestyle_item_data)
         return lifestyle_items_list
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        return {"error": "An error occurred while fetching lifestyle items", "details": str(e)}
+        # raise HTTPException(status_code=500, detail=str(e))
+    
 
 def get_items():
     try:

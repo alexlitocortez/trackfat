@@ -73,4 +73,6 @@ async def create_user(user: UserCreate):
     return user_helper(created_user)
 
 
-
+@router.get("/api/datasets")
+async def allow_datasets(current_users: Annotated[str, Depends(oauth2_scheme)]):
+    return current_users

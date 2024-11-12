@@ -52,5 +52,5 @@ class LifestyleItem(BaseModel):
     Blood_Pressure: str
     Heart_Rate: int | float
     Daily_Steps: int | float
-    # Sleep_Disorder: Literal["Sleep Apnea", "Insomnia"]
+    Sleep_Disorder: str | None
 

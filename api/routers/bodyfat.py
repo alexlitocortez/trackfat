@@ -19,19 +19,7 @@ items = get_items()
 
 newItems = get_new_items()
 
-lifestyleItems = get_lifestyle_items()
-
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
-
-
-@router.get('/api/lifestyle')
-def return_lifestyle_df():
-
-    df = pd.DataFrame([lifestyleItem.dict() for lifestyleItem in lifestyleItems])
-
-    df = df.map(lambda x: str(x).replace('[', '').replace(']', '').replace('"', '') if isinstance(x, str) else x)
-
-    return df.to_dict(orient='records')
 
 
 @router.get('/api/df')

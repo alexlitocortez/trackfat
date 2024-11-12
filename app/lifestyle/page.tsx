@@ -24,13 +24,17 @@ function page() {
     }
 
     return (
-        <div>
+        <div className='bg-white'>
             <div className='flex flex-row justify-end p-3'>
-                <button className='text-black bg-white rounded p-4' onClick={logout}>Logout</button>
+                <button className='text-white bg-black rounded p-4' onClick={logout}>Logout</button>
             </div>
-            <button className='text-black bg-white rounded m-1 p-3' onClick={() => navigate.push('/home')}>Home</button>
-            <button className='text-black bg-white rounded m-1 p-3' onClick={() => navigate.push('/bodyfat')}>Bodyfat Dataset</button>
-            <LifestyleTable />
+            <div className="flex min-h-screen flex-col items-center justify-between p-24 bg-white">
+                <div className='bg-white z-10 w-full max-w-5xl items-center flex-col justify-center font-mono text-sm lg:flex'>
+                    <button className='text-white bg-black rounded m-1 p-3' onClick={() => navigate.push('/home')}>Home</button>
+                    <button className='text-white bg-black rounded m-1 p-3' onClick={() => navigate.push('/bodyfat')}>Bodyfat Dataset</button>
+                    <LifestyleTable />
+                </div>
+            </div>
         </div>
     )
 }

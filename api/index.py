@@ -1,6 +1,6 @@
 from fastapi import FastAPI, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from .routers import auth, bodyfat, users
+from .routers import auth, bodyfat, users, lifestyle
 from mangum import Mangum
 
 app = FastAPI()
@@ -26,14 +26,14 @@ app.add_middleware(
 app.include_router(bodyfat.router)
 app.include_router(auth.router)
 app.include_router(users.router) 
+app.include_router(lifestyle.router) 
 
 handler = Mangum(app)
 
 
 # CALCULATIONS I WANT TO MAKE
     # Configure authentication (1)
-        # Figure out how to implement protected routes
-            # How to send token to logout for bodyfat page so user can logout
+        # Figure out why lifestyle data isn't loading
         # Figure out dynamic routing
         # Figure out what is URL searchParams
         # Create required 6 characters for password input in register page
