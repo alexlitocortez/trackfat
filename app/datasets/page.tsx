@@ -4,6 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { Box } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import instance from '../helpers/axiosInstance';
+import UserLogin from '../components/userlogin';
 
 interface AuthType {
     auth: string
@@ -71,8 +72,7 @@ function page() {
                     ) :
                     (
                         <>
-                            <h1 className='text-black'>User must login or create account!</h1>
-                            <button className='text-white bg-black rounded m-1 p-3' onClick={() => navigate.push('/')}>Home</button>
+                            < UserLogin />
                         </>
                     )
             }

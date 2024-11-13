@@ -130,6 +130,7 @@ function Login() {
                     <Button
                         fullWidth
                         onClick={loginUser}
+                        className='hover:bg-slate-700'
                     >
                         Sign in
                     </Button>
@@ -140,6 +141,7 @@ function Login() {
                                 href="/material-ui/getting-started/templates/sign-in/"
                                 variant="body2"
                                 sx={{ alignSelf: 'center' }}
+                                className='hover:bg-slate-700'
                             >
                                 Sign up
                             </Link>

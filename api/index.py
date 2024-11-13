@@ -33,16 +33,14 @@ handler = Mangum(app)
 
 # CALCULATIONS I WANT TO MAKE
     # Configure authentication (1)
-        # Figure out why lifestyle data isn't loading
-        # Figure out dynamic routing
+        # Add hover effect to all button
+        # Make lifestyle table more responsive if possible
         # Figure out what is URL searchParams
         # Create required 6 characters for password input in register page
         # Figure out why users need token for login
     # Add calculator to determine how long to get to specific bf percentage (2)
     # Containerize either the frontend/backend/database (3)
-    # Get sleep disorder field
     # Create nested routes
-    # Add names to dataset
     # Understand bodyfat category function more
 # CHECK WHY VERCEL ISN'T WORKING 
 # FIGURE OUT WHY ARRAY OF STRINGS IN COLUMNS MATCHES NUMBER DATA IN TABLE COMPONENT

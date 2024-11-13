@@ -47,16 +47,26 @@ function LifestyleTable() {
         }
     ])
 
+    const token = localStorage?.getItem('token')
+
     useEffect(() => {
-        instance.get('/lifestyle')
-            .then(function (res) {
-                setData(res.data)
-                console.log("res", data)
+        if (token) {
+            instance.get('/lifestyle', {
+                headers: {
+                    Authorization: `Bearer ${token}`
+                }
             })
-            .catch((error) => {
-                console.log("error", error)
-            })
-    }, [])
+                .then(function (res) {
+                    setData(res.data)
+                    console.log("res", data)
+                })
+                .catch((error) => {
+                    console.log("error", error)
+                })
+        } else {
+            setData([])
+        }
+    }, [token])
 
     return (
         <div>
