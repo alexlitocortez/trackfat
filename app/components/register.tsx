@@ -136,6 +136,7 @@ function Register() {
                             variant="outlined"
                             onChange={handlePassword}
                             value={userRegistration.password}
+                            inputProps={{ maxLength: 12 }}
                         />
                     </FormControl>
                     <Button

@@ -2,20 +2,17 @@
 
 import React, { useState, useEffect } from 'react';
 import instance from '../helpers/axiosInstance';
-import MUIDataTable from 'mui-datatables';
+import MUIDataTable, { MUIDataTableOptions } from 'mui-datatables';
 import Box from '@mui/material/Box';
 
 type DataRow = {
     [key: string]: any;
 }
 
-interface BodyFatData {
-    BodyFatCategory: number;
-}
-
 interface DataTableProps {
     token?: string | null;
 }
+
 
 const DataTable: React.FC<DataTableProps> = () => {
     const [data, setData] = useState<DataRow[]>([]);
@@ -23,91 +20,102 @@ const DataTable: React.FC<DataTableProps> = () => {
         {
             name: 'Age',
             options: {
-                filter: true
+                customBodyRender: (value: number) => (
+                    <div style={{ textAlign: 'center' }}>
+                        {value}
+                    </div>
+                )
             }
         },
         {
             name: 'Abdomen',
             options: {
-                filter: true
+                customBodyRender: (value: number) => (
+                    <div style={{ textAlign: 'center' }}>
+                        {value}
+                    </div>
+                )
             }
         },
         {
             name: 'Ankle',
             options: {
-                filter: true
+                customBodyRender: (value: number) => (
+                    <div style={{ textAlign: 'center' }}>
+                        {value}
+                    </div>
+                )
             }
         },
         {
             name: 'Biceps',
             options: {
-                filter: true
+                customBodyRender: (value: number) => (
+                    <div style={{ textAlign: 'center' }}>
+                        {value}
+                    </div>
+                )
             }
         },
-        {
-            name: 'Wrist',
-            options: {
-                filter: true
-            }
-        },
-        {
-            name: 'Thigh',
-            options: {
-                filter: true
-            }
-        },
-        {
-            name: 'Neck',
-            options: {
-                filter: true
-            }
-        },
-        {
-            name: 'Knee',
-            options: {
-                filter: true
-            }
-        },
+        // {
+        //     name: 'Wrist'
+        // },
+        // {
+        //     name: 'Thigh'
+        // },
+        // {
+        //     name: 'Neck',
+        // },
+        // {
+        //     name: 'Knee',
+        // },
         {
             name: 'Height',
             options: {
-                filter: true
+                customBodyRender: (value: number) => (
+                    <div style={{ textAlign: 'center' }}>
+                        {value}
+                    </div>
+                )
             }
         },
-        {
-            name: 'Hip',
-            options: {
-                filter: true
-            }
-        },
-        {
-            name: 'Forearm',
-            options: {
-                filter: true
-            }
-        },
+        // {
+        //     name: 'Hip',
+        // },
+        // {
+        //     name: 'Forearm',
+        // },
         {
             name: 'Density',
             options: {
-                filter: true
+                customBodyRender: (value: number) => (
+                    <div style={{ textAlign: 'center' }}>
+                        {value}
+                    </div>
+                )
             }
         },
-        {
-            name: 'Chest',
-            options: {
-                filter: true
-            }
-        },
+        // {
+        //     name: 'Chest',
+        // },
         {
             name: 'BodyFat',
             options: {
-                filter: true
+                customBodyRender: (value: number) => (
+                    <div style={{ textAlign: 'center' }}>
+                        {value}
+                    </div>
+                )
             }
         },
         {
             name: 'Weight',
             options: {
-                filter: true
+                customBodyRender: (value: number) => (
+                    <div style={{ textAlign: 'center' }}>
+                        {value}
+                    </div>
+                )
             }
         },
     ])
@@ -139,7 +147,6 @@ const DataTable: React.FC<DataTableProps> = () => {
         const newColumnName = 'Bodyfat Weight';
         const newColumn = {
             name: newColumnName,
-            options: { filter: true },
         }
         instance.get('/convert')
             .then(function (res) {
@@ -162,7 +169,6 @@ const DataTable: React.FC<DataTableProps> = () => {
         const newColumnName = 'Men BodyFatCategory';
         const newColumn = {
             name: newColumnName,
-            options: { filter: true },
         }
         instance.get('/bodyfat-status-men')
             .then(function (res) {
@@ -181,7 +187,6 @@ const DataTable: React.FC<DataTableProps> = () => {
         const newColumnName = 'Women BodyFatCategory';
         const newColumn = {
             name: newColumnName,
-            options: { filter: true },
         }
         instance.get('/bodyfat-status-women')
             .then(function (res) {
@@ -198,10 +203,9 @@ const DataTable: React.FC<DataTableProps> = () => {
             })
     }
 
-
     return (
         <div>
-            <Box sx={{ marginBottom: '1rem' }}>
+            <Box sx={{ marginBottom: '1rem', display: 'flex' }}>
                 <button onClick={addColumn} className='bg-black hover:bg-slate-600 text-white font-bold py-2 px-4 rounded mr-1'>
                     Bodyfat Weight
                 </button>
@@ -216,6 +220,9 @@ const DataTable: React.FC<DataTableProps> = () => {
                 title={"Bodyfat Data"}
                 data={data}
                 columns={columns}
+                options={{
+                    responsive: 'simple'
+                }}
             />
         </div>
     )

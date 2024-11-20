@@ -6,6 +6,7 @@ import Button from '@mui/material/Button';
 import FormControl from '@mui/material/FormControl';
 import TextField from '@mui/material/TextField';
 import { useRouter } from 'next/navigation';
+import UserLogin from '../components/userlogin';
 
 
 interface UserData {
@@ -29,6 +30,7 @@ function page() {
         password: ''
     })
     const [clickUserButton, setClickUserButton] = useState(Boolean)
+    const [userToken, setUserToken] = useState<string>()
 
     const token = localStorage?.getItem('token');
 
@@ -41,6 +43,7 @@ function page() {
             })
                 .then(function (res) {
                     setUsers(res.data)
+                    setUserToken(token)
 
                     if (!token) {
                         console.log("no token")
@@ -124,58 +127,70 @@ function page() {
         })
     }
 
-
     return (
-        <div className='flex flex-col items-center'>
-            <div className='flex flex-row justify-end p-3'>
-                <button className='text-black bg-white rounded p-4' onClick={logout}>Logout</button>
-            </div>
-            <div className='flex flex-row'>
-                <button className='bg-white text-black' onClick={addUserButton}>Add User</button>
-                {
-                    clickUserButton && (
-                        <div className='flex flex-col'>
-                            <TextField
-                                label="Username"
-                                variant="outlined"
-                                className="bg-white"
-                                onChange={handleUsername}
-                                value={addUser.username}
-                            >
-                            </TextField>
-                            <TextField
-                                label="Email"
-                                variant="outlined"
-                                className="bg-white"
-                                onChange={handleEmail}
-                                value={addUser.email}
-                            >
-                                Email
-                            </TextField>
-                            <TextField
-                                label="Password"
-                                variant="outlined"
-                                className='bg-white'
-                                onChange={handlePassword}
-                                value={addUser.password}
-                            >
-                                Password
-                            </TextField>
-                            <Button onClick={addUserInfo}>Add User</Button>
+        <div className='flex min-h-screen flex-col items-center justify-between p-24 bg-white'>
+            {
+                token ? (
+                    <>
+                        <div className='flex flex-col items-center'>
+                            <div className='flex flex-row justify-end p-3'>
+                                <button className='text-black bg-white rounded p-4' onClick={logout}>Logout</button>
+                            </div>
+                            <div className='flex flex-row'>
+                                <button className='bg-white text-black' onClick={addUserButton}>Add User</button>
+                                {
+                                    clickUserButton && (
+                                        <div className='flex flex-col'>
+                                            <TextField
+                                                label="Username"
+                                                variant="outlined"
+                                                className="bg-white"
+                                                onChange={handleUsername}
+                                                value={addUser.username}
+                                            >
+                                            </TextField>
+                                            <TextField
+                                                label="Email"
+                                                variant="outlined"
+                                                className="bg-white"
+                                                onChange={handleEmail}
+                                                value={addUser.email}
+                                            >
+                                                Email
+                                            </TextField>
+                                            <TextField
+                                                label="Password"
+                                                variant="outlined"
+                                                className='bg-white'
+                                                onChange={handlePassword}
+                                                value={addUser.password}
+                                            >
+                                                Password
+                                            </TextField>
+                                            <Button onClick={addUserInfo}>Add User</Button>
+                                        </div>
+                                    )
+                                }
+                            </div>
+                            {users.map((user, index) => {
+                                return (
+                                    <li key={index}>
+                                        <div className='flex flex-row'>
+                                            {user.name}
+                                            <button className='bg-white text-black' onClick={() => deleteUser(user.id)}>Delete User</button>
+                                        </div>
+                                    </li>
+                                )
+                            })}
                         </div>
-                    )
-                }
-            </div>
-            {users.map((user, index) => {
-                return (
-                    <li key={index}>
-                        <div className='flex flex-row'>
-                            {user.name}
-                            <button className='bg-white text-black' onClick={() => deleteUser(user.id)}>Delete User</button>
-                        </div>
-                    </li>
+                    </>
+                ) : (
+                    <>
+                        <UserLogin />
+                    </>
                 )
-            })}
+            }
+
         </div>
     )
 }

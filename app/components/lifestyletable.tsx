@@ -13,38 +13,94 @@ function LifestyleTable() {
     const [data, setData] = useState<DataRow[]>([])
     const [columns, setColumns] = useState([
         {
-            name: 'Gender'
+            name: 'Gender',
+            options: {
+                customBodyRender: (value: string | number) => (
+                    <div style={{ textAlign: 'center' }}>
+                        {value}
+                    </div>
+                )
+            },
         },
         {
-            name: 'Age'
+            name: 'Age',
+            options: {
+                customBodyRender: (value: string | number) => (
+                    <div style={{ textAlign: 'center' }}>
+                        {value}
+                    </div>
+                )
+            }
+        },
+        // {
+        //     name: 'Occupation'
+        // },
+        {
+            name: 'Sleep_Duration',
+            options: {
+                customBodyRender: (value: string | number) => (
+                    <div style={{ textAlign: 'center' }}>
+                        {value}
+                    </div>
+                )
+            }
         },
         {
-            name: 'Occupation'
+            name: 'Quality_Of_Sleep',
+            options: {
+                customBodyRender: (value: string | number) => (
+                    <div style={{ textAlign: 'center' }}>
+                        {value}
+                    </div>
+                )
+            }
         },
         {
-            name: 'Sleep_Duration'
+            name: 'Physical_Activity_Level',
+            options: {
+                customBodyRender: (value: string | number) => (
+                    <div style={{ textAlign: 'center' }}>
+                        {value}
+                    </div>
+                )
+            }
         },
         {
-            name: 'Quality_Of_Sleep'
+            name: 'Stress_Level',
+            options: {
+                customBodyRender: (value: string | number) => (
+                    <div style={{ textAlign: 'center' }}>
+                        {value}
+                    </div>
+                )
+            }
         },
         {
-            name: 'Physical_Activity_Level'
+            name: 'BMI_Category',
+            options: {
+                customBodyRender: (value: string | number) => (
+                    <div style={{ textAlign: 'center' }}>
+                        {value}
+                    </div>
+                )
+            }
         },
+        // {
+        //     name: 'Blood_Pressure'
+        // },
         {
-            name: 'Stress_Level'
+            name: 'Heart_Rate',
+            options: {
+                customBodyRender: (value: string | number) => (
+                    <div style={{ textAlign: 'center' }}>
+                        {value}
+                    </div>
+                )
+            }
         },
-        {
-            name: 'BMI_Category'
-        },
-        {
-            name: 'Blood_Pressure'
-        },
-        {
-            name: 'Heart_Rate'
-        },
-        {
-            name: 'Daily_Steps'
-        }
+        // {
+        //     name: 'Daily_Steps'
+        // }
     ])
 
     const token = localStorage?.getItem('token')
@@ -75,6 +131,9 @@ function LifestyleTable() {
                     title={"Lifestyle Data"}
                     data={data}
                     columns={columns}
+                    options={{
+                        responsive: 'simple'
+                    }}
                 />
             </Box>
         </div>

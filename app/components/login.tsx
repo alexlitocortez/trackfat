@@ -25,6 +25,7 @@ function Login() {
         username: '',
         password: ''
     })
+    const [unsuccessfulLogin, setUnsuccessfulLogin] = useState(false)
 
     const loginUser = () => {
         setTimeout(() => {
@@ -58,6 +59,7 @@ function Login() {
             })
             .catch((error) => {
                 console.log("error", error)
+                setUnsuccessfulLogin(true)
             })
     }
 
@@ -76,7 +78,12 @@ function Login() {
     }
 
     return (
-        <div>
+        <div className='flex min-h-screen flex-col items-center justify-between p-24 bg-white'>
+            {
+                unsuccessfulLogin && (
+                    <h1 className='text-black'>Incorrect username or password</h1>
+                )
+            }
             <MuiCard variant='outlined' sx={{ padding: '2rem' }}>
                 <Typography
                     component="h1"
