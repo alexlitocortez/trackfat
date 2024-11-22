@@ -13,10 +13,17 @@ interface DataTableProps {
     token?: string | null;
 }
 
+type Column = {
+    name: string;
+    options?: {
+        customBodyRender?: (value: any) => React.ReactNode;
+    }
+}
+
 
 const DataTable: React.FC<DataTableProps> = () => {
     const [data, setData] = useState<DataRow[]>([]);
-    const [columns, setColumns] = useState([
+    const [columns, setColumns] = useState<Column[]>([
         {
             name: 'Age',
             options: {
@@ -202,6 +209,8 @@ const DataTable: React.FC<DataTableProps> = () => {
                 console.error("error", error)
             })
     }
+
+
 
     return (
         <div>

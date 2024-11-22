@@ -2,6 +2,7 @@ from fastapi import APIRouter, Depends, Request
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm, HTTPBasic
 from api.helper.crud import get_items, get_new_items, get_bodyfat_category, get_womens_bodyfat, get_lifestyle_items
 from ..database import db, bodyfat_collection
+from ..models.bodyfatModels import BodyFatInput
 from typing import List
 import pandas as pd
 import numpy as np
@@ -54,20 +55,20 @@ async def avg_columns():
     # Remove brackets and quotes
     df = df.map(lambda x: str(x).replace('[', '').replace(']', '').replace('"', '') if isinstance(x, str) else x)
 
-    dfAgeAverage = np.average(df['Age'].values)
-    dfAbdomenAverage = np.average(df['Abdomen'].values)
-    dfBicepsAverage = np.average(df['Biceps'].values)
-    dfWristAverage = np.average(df['Wrist'].values)
-    dfThighAverage = np.average(df['Thigh'].values)
-    dfNeckAverage = np.average(df['Neck'].values)
-    dfKneeAverage = np.average(df['Knee'].values)
-    dfHeightAverage = np.average(df['Height'].values)
-    dfHipAverage = np.average(df['Hip'].values)
-    dfForearmAverage = np.average(df['Forearm'].values)
-    dfDensityAverage = np.average(df['Density'].values)
-    dfChestAverage = np.average(df['Chest'].values)
-    dfBodyFatAverage = np.average(df['BodyFat'].values)
-    dfWeightAverage = np.average(df['Weight'].values)
+    dfAgeAverage = round(np.average(df['Age'].values), 2)
+    dfAbdomenAverage = round(np.average(df['Abdomen'].values), 2)
+    dfBicepsAverage = round(np.average(df['Biceps'].values), 2)
+    dfWristAverage = round(np.average(df['Wrist'].values), 2)
+    dfThighAverage = round(np.average(df['Thigh'].values), 2)
+    dfNeckAverage = round(np.average(df['Neck'].values), 2)
+    dfKneeAverage = round(np.average(df['Knee'].values), 2)
+    dfHeightAverage = round(np.average(df['Height'].values), 2)
+    dfHipAverage = round(np.average(df['Hip'].values), 2)
+    dfForearmAverage = round(np.average(df['Forearm'].values), 2)
+    dfDensityAverage = round(np.average(df['Density'].values), 2)
+    dfChestAverage = round(np.average(df['Chest'].values), 2)
+    dfBodyFatAverage = round(np.average(df['BodyFat'].values), 2)
+    dfWeightAverage = round(np.average(df['Weight'].values), 2)
 
     return { "avgAge": dfAgeAverage, "avgAbdomen": dfAbdomenAverage, "avgBiceps": dfBicepsAverage, "avgWrist": dfWristAverage, 
             "avgThigh": dfThighAverage, "avgNeck": dfNeckAverage, "avgKnee": dfKneeAverage, "avgHeight": dfHeightAverage, "avgHip": dfHipAverage, "avgForearm": dfForearmAverage,
@@ -116,3 +117,12 @@ async def bodyfat_status_women():
     df['Women BodyFatCategory'] = df.apply(categorize, axis=1)
 
     return df.to_dict(orient='records')
+
+
+@router.post('/api/calculate-bodyfat')
+def calculate_bodyfat(bodyfat_input: BodyFatInput):
+    # bodyfat_percentage = int(bodyfat_input)
+
+    # Use bodyfat_percentage for further calculations
+    return bodyfat_input
+# Create state for frontend to receive value and send it via backend as POST request
