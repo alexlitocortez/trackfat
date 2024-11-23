@@ -55,4 +55,6 @@ class LifestyleItem(BaseModel):
     Sleep_Disorder: str | None
 
 class BodyFatInput(BaseModel):
-    bodyfat_percentage: str
+    weight: int | float
+    height: int | float
+    bodyfat_percentage: int | float

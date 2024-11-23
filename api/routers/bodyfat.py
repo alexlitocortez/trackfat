@@ -121,8 +121,9 @@ async def bodyfat_status_women():
 
 @router.post('/api/calculate-bodyfat')
 def calculate_bodyfat(bodyfat_input: BodyFatInput):
-    # bodyfat_percentage = int(bodyfat_input)
+    weight = bodyfat_input.weight
+    height = bodyfat_input.height
+    bodyfat_percentage = bodyfat_input.bodyfat_percentage
 
-    # Use bodyfat_percentage for further calculations
-    return bodyfat_input
-# Create state for frontend to receive value and send it via backend as POST request
+    # Figure out the formula to calculate bodyfat loss
+    return { "weight": weight, "height": height, "bodyfat_percentage": bodyfat_percentage}

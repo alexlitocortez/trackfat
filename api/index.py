@@ -32,7 +32,7 @@ handler = Mangum(app)
 
 
 # CALCULATIONS I WANT TO MAKE
-    # How to send value to backend to calculate bodyfat loss
+    # Figure out if you can just send value from frontend as number value
     # Stack columns on top of each other vertically to make responsive
     # Round average of bodyfat dropdown to two decimal places
     # Add calculator to determine how long to get to specific bf percentage (2)
